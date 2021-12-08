@@ -1,0 +1,23 @@
+{
+    "register": "登記",
+    "login": "登錄",
+    "guest": "以訪客繼續",
+    "picnic": "野餐",
+    "city_girl": "城市女孩",
+    "yoga_living": "瑜伽生活",
+    "logout": "登出帳號",
+    "filter": "篩選",
+    "menu_of_stylerella": "Stylerella 的菜單",
+    "account_details": "帳戶詳細資料",
+    "membership_bonus": "會員獎金",
+    "my_orders": "我的訂單",
+    "my_wish_list": "我的收藏",
+    "request_return": "要求退貨",
+    "address_book": "地址簿",
+    "first_name": "名",
+    "last_name": "姓",
+    "email": "電子郵件",
+    "mobile": "移動的",
+    "change_password": "更改密碼",
+    "go_back": "回去"
+}

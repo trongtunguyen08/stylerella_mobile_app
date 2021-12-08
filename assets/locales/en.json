@@ -1,0 +1,23 @@
+{
+    "register": "Register",
+    "login": "Login",
+    "guest": "Continue as Guest",
+    "picnic": "Picnic",
+    "city_girl": "City Girl",
+    "yoga_living": "Yoga Living",
+    "logout": "Logout",
+    "filter": "Filter",
+    "menu_of_stylerella": "Menu of Stylerella",
+    "account_details": "Account Details",
+    "membership_bonus": "Membership Bonus",
+    "my_orders": "My Orders",
+    "my_wish_list": "My Wish List",
+    "request_return": "Request Return",
+    "address_book": "Address Book",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "mobile": "Mobile",
+    "change_password": "Change Password",
+    "go_back": "Go Back"
+}
