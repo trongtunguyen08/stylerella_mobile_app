@@ -87,26 +87,29 @@ const VirtualShopScreen = (props) => {
         await setOpenMenu(openMenu => !openMenu)
     }
 
-    const translateYAnimatedValue = useRef(new Animated.Value(0)).current
-    const translateY = translateYAnimatedValue.interpolate({
+    const itemOpacity = useRef(new Animated.Value(0)).current
+    const itemTranslateY = itemOpacity.interpolate({
         inputRange: [0, 1],
         outputRange: [-20, 0]
     })
-    const onLoadEnd = () => {
+    const onImageItemEndLoad = () => {
         setTimeout(() => {
             setLoading(false)
-        }, 1000)
-        setTimeout(() => {
             Animated.timing(
-                translateYAnimatedValue,
+                itemOpacity,
                 {
                     toValue: 1,
                     duration: 1000,
                     useNativeDriver: true
                 }
             ).start()
-        }, 1100)
+        }, 1000)
     }
+    const onLoadEnd = () => {
+        onImageItemEndLoad()
+    }
+
+    const scrollX = useRef(new Animated.Value(0)).current
 
     const onBackPress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -204,7 +207,8 @@ const VirtualShopScreen = (props) => {
                             <SafeAreaProvider>
                                 <SafeAreaView>
                                     <View style={styles.headerContent}>
-                                        <TouchableOpacity
+                                        <Pressable
+                                            hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
                                             style={styles.headerBackIcon}
                                             onPress={onBackPress}
                                         >
@@ -213,7 +217,7 @@ const VirtualShopScreen = (props) => {
                                                 color={COLORS.white}
                                                 size={BACK_ICON_SIZE}
                                             />
-                                        </TouchableOpacity>
+                                        </Pressable>
                                         <Title style={styles.headerText}>{headerTitle}</Title>
                                         <Image
                                             source={IMAGES.STYLERELLA2}
@@ -229,27 +233,57 @@ const VirtualShopScreen = (props) => {
                             showsHorizontalScrollIndicator={false}
                             keyExtractor={item => item.id + 'product'}
                             pagingEnabled
-                            renderItem={({ item }) => {
+                            renderItem={({ item, index }) => {
+                                let inputRange = [(index - 0.4) * width, index * width, (index + 0.4) * width]
                                 return (
-                                    <TouchableOpacity
-                                        activeOpacity={0.7}
-                                        style={styles.item}
-                                        onPress={() => navigation.navigate('ProductDetails')}
+                                    <Animated.View
+                                        style={{
+                                            opacity: itemOpacity,
+                                            transform: [{
+                                                translateY: itemTranslateY
+                                            }]
+                                        }}
                                     >
-                                        <Animated.Image
-                                            source={item.image}
-                                            style={[styles.itemImage, {
-                                                transform: [
-                                                    {
-                                                        translateY: translateY
-                                                    }
-                                                ]
-                                            }]}
-                                            resizeMode='stretch'
-                                        />
-                                    </TouchableOpacity>
+                                        <TouchableOpacity
+                                            activeOpacity={0.7}
+                                            style={styles.item}
+                                            onPress={() => navigation.navigate('ProductDetails')}
+                                        >
+                                            <Animated.Image
+                                                source={item.image}
+                                                style={[styles.itemImage, {
+                                                    transform: [
+                                                        {
+                                                            translateY: scrollX.interpolate({
+                                                                inputRange,
+                                                                outputRange: [-30, 0, -30]
+                                                            })
+                                                        },
+                                                        {
+                                                            scale: scrollX.interpolate({
+                                                                inputRange,
+                                                                outputRange: [0, 1, 0]
+                                                            })
+                                                        }
+                                                    ],
+                                                    opacity: scrollX.interpolate({
+                                                        inputRange,
+                                                        outputRange: [0, 1, 0]
+                                                    })
+                                                }]}
+                                                resizeMode='stretch'
+                                                onLoadEnd={onImageItemEndLoad}
+                                            />
+                                        </TouchableOpacity>
+                                    </Animated.View>
                                 )
                             }}
+                            onScroll={Animated.event(
+                                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                                {
+                                    useNativeDriver: true
+                                }
+                            )}
                         />
 
                         {/* Filter Button */}

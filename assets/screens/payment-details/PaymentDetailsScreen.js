@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StatusBar, TouchableOpacity, View, Image, ScrollView, TextInput } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,6 +14,13 @@ const PaymentDetailsScreen = () => {
     const navigation = useNavigation()
     const { items } = useSelector(state => state.shoppingListReducer.listProduct)
     const listProducts = items.filter(item => item.isChecked == true)
+    // Delivery methods
+    const [pickAtStore, setPickAtStore] = useState(true)
+    const [pickAtHome, setPickAtHome] = useState(false)
+    // Payment methods
+    const [visa, setVisa] = useState(true)
+    const [fps, setFps] = useState(false)
+    const [payMe, setPayMe] = useState(false)
     return (
         <View style={styles.container}>
             <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
@@ -104,6 +111,11 @@ const PaymentDetailsScreen = () => {
                         <CheckBox
                             style={styles.checkbox}
                             checkBoxColor={COLORS.gray}
+                            isChecked={pickAtStore}
+                            onClick={() => {
+                                setPickAtStore(true)
+                                setPickAtHome(false)
+                            }}
                         />
                         <Text style={styles.pickerItemText}>Pick up at the store</Text>
                     </View>
@@ -111,6 +123,11 @@ const PaymentDetailsScreen = () => {
                         <CheckBox
                             checkBoxColor={COLORS.gray}
                             style={styles.checkbox}
+                            isChecked={pickAtHome}
+                            onClick={() => {
+                                setPickAtStore(false)
+                                setPickAtHome(true)
+                            }}
                         />
                         <Text style={styles.pickerItemText}>Deliver to your door</Text>
                     </View>
@@ -123,6 +140,13 @@ const PaymentDetailsScreen = () => {
                         <CheckBox
                             checkBoxColor={COLORS.gray}
                             style={styles.checkbox}
+                            isChecked={visa}
+                            onClick={() => {
+                                setVisa(true)
+                                setFps(false)
+                                setPayMe(false)
+                            }}
+
                         />
                         <Text style={styles.pickerItemText}>VISA / Master Cart / AE</Text>
                     </View>
@@ -130,6 +154,12 @@ const PaymentDetailsScreen = () => {
                         <CheckBox
                             checkBoxColor={COLORS.gray}
                             style={styles.checkbox}
+                            isChecked={fps}
+                            onClick={() => {
+                                setVisa(false)
+                                setFps(true)
+                                setPayMe(false)
+                            }}
                         />
                         <Text style={styles.pickerItemText}>FPS</Text>
                     </View>
@@ -137,6 +167,12 @@ const PaymentDetailsScreen = () => {
                         <CheckBox
                             checkBoxColor={COLORS.gray}
                             style={styles.checkbox}
+                            isChecked={payMe}
+                            onClick={() => {
+                                setVisa(false)
+                                setFps(false)
+                                setPayMe(true)
+                            }}
                         />
                         <Text style={styles.pickerItemText}>PayMe</Text>
                     </View>

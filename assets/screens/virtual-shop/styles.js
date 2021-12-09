@@ -54,11 +54,11 @@ export const styles = StyleSheet.create({
         zIndex: 9999
     },
     itemImage: {
-        width: setWidth(57),
-        height: setHeight(22),
+        width: setWidth(60),
+        height: setHeight(25),
         position: 'absolute',
-        top: setHeight(45),
-        left: setWidth(50) - (setWidth(57) / 2)
+        top: setHeight(42),
+        left: setWidth(50) - (setWidth(60) / 2)
     },
     popupMenu: {
         position: 'absolute',
