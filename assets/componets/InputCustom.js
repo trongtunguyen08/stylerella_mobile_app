@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Animated, StyleSheet, Text, View, TextInput, Platform, PixelRatio, TouchableOpacity } from 'react-native'
+import { Animated, StyleSheet, Text, View, TextInput, Platform, PixelRatio, TouchableOpacity, useWindowDimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import * as Haptics from 'expo-haptics'
 
@@ -8,8 +8,17 @@ import { COLORS, FONTS, width } from '../contants/contants'
 const InputAnimated = Animated.createAnimatedComponent(TextInput)
 
 const InputCustom = (props) => {
+    const { width, height } = useWindowDimensions()
     const { placeholder, value, onChangeText, leftIconName, isPassword } = props
     let ICON_SIZE = 22
+    let INPUT_WIDTH = '100%'
+
+    if (width >= 700) {
+        INPUT_WIDTH = '80%'
+    }
+    if (width >= 1024) {
+        INPUT_WIDTH = '60%'
+    }
 
     const [hiding, setHiding] = useState(isPassword)
     let RIGHT_ICON_NAME = ''
@@ -37,7 +46,9 @@ const InputCustom = (props) => {
     }, [])
 
     return (
-        <View style={[styles.container]}>
+        <View style={[styles.container, {
+            width: INPUT_WIDTH
+        }]}>
             {
                 leftIconName && <Ionicons name={leftIconName} size={ICON_SIZE} style={styles.inputIconLeft} />
             }
@@ -76,21 +87,17 @@ const InputCustom = (props) => {
 export default InputCustom
 
 const ratio = PixelRatio.get()
-
-let MARGIN_BOTTOM = 10
 let PADDING = Platform.OS == 'android' ? 14 : 18
 let FONT_SIZE = 18
 
-if (ratio <= 2) {
-    MARGIN_BOTTOM = 5
-    PADDING = Platform.OS == 'android' ? 7 : 10
+if (Platform.OS == 'android' && ratio <= 2) {
+    PADDING = 7
     FONT_SIZE = 12
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        marginBottom: MARGIN_BOTTOM,
+        marginBottom: 10,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -98,6 +105,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: PADDING,
         borderColor: COLORS.primary,
+        alignSelf: 'center'
     },
     input: {
         fontFamily: FONTS.MeridiesAntiqua,

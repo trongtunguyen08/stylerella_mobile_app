@@ -10,7 +10,8 @@ import {
     ImageBackground,
     KeyboardAvoidingView,
     BackHandler,
-    Alert
+    PixelRatio,
+    useWindowDimensions
 } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
@@ -24,6 +25,23 @@ import { t } from '../../locales/index'
 import InputCustom from '../../componets/InputCustom'
 
 const RegisterScreen = () => {
+    const { width, height } = useWindowDimensions()
+    const ratio = PixelRatio.get()
+    let LOGO_SIZE = 35
+    let BUTTON_WIDTH = width * .65
+    let BUTTON_HEIGHT = width * .18
+    if (width >= 700) {
+        BUTTON_WIDTH = width * .45
+        BUTTON_HEIGHT = width * .1
+    }
+    if (width >= 1024) {
+        BUTTON_WIDTH = width * .4
+        BUTTON_HEIGHT = width * .07
+    }
+    if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 2.5)) {
+        LOGO_SIZE = 30
+    }
+
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
 
@@ -88,11 +106,16 @@ const RegisterScreen = () => {
             }
             {/* Header */}
             <View
-                style={styles.headerContainer}
+                style={[styles.headerContainer, {
+                    height: (height * .11) + (StatusBar.currentHeight / 2),
+                    width: width
+                }]}
             >
                 <SafeAreaProvider>
                     <SafeAreaView>
-                        <View style={styles.headerContent}>
+                        <View style={[styles.headerContent, {
+                            width: width
+                        }]}>
                             <TouchableOpacity
                                 style={styles.headerBackIcon}
                                 onPress={onBackPress}
@@ -106,7 +129,10 @@ const RegisterScreen = () => {
                             <Title style={styles.headerText}>{t('register')}</Title>
                             <Image
                                 source={IMAGES.STYLERELLA2}
-                                style={styles.headerRightIamge}
+                                style={[styles.headerRightIamge, {
+                                    width: LOGO_SIZE,
+                                    height: LOGO_SIZE
+                                }]}
                             />
                         </View>
                     </SafeAreaView>
@@ -175,10 +201,15 @@ const RegisterScreen = () => {
                     >
                         <ImageBackground
                             source={IMAGES.BUTTON}
-                            style={styles.registerButtonWrapper}
+                            style={[styles.registerButtonWrapper, {
+                                width: BUTTON_WIDTH,
+                                height: BUTTON_HEIGHT
+                            }]}
                             resizeMode='stretch'
                         >
-                            <Text style={styles.registerText}>Register</Text>
+                            <Text style={[styles.registerText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>Register</Text>
                         </ImageBackground>
                     </TouchableOpacity>
                 </Animated.View>

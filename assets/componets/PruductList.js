@@ -2,12 +2,20 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useRef, useState } from 'react'
 import { Alert } from 'react-native'
 import { PixelRatio, Platform, StatusBar } from 'react-native'
-import { StyleSheet, View, ImageBackground, FlatList, Image, TouchableOpacity } from 'react-native'
+import {
+    StyleSheet,
+    View,
+    ImageBackground,
+    FlatList,
+    Image,
+    TouchableOpacity,
+    useWindowDimensions
+} from 'react-native'
 import { Rating } from 'react-native-elements'
 import { Text, Subheading, Caption, Snackbar } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { COLORS, FONTS, IMAGES, setHeight, width } from '../contants/contants'
+import { COLORS, FONTS, IMAGES, setHeight } from '../contants/contants'
 import { ACTION_TYPES } from '../redux/reducers/actionTypes'
 
 const DATA = [
@@ -70,6 +78,29 @@ const DATA = [
 ]
 
 const ProductList = () => {
+    const { width, height } = useWindowDimensions()
+    let WIDTH = (width - 30) / 2
+    let PADDING_VER = 14
+    let MARGIN_HO = 5
+    let IMAGE_HEIGHT = height * .18
+    const ratio = PixelRatio.get()
+
+    if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
+        PADDING_VER = 7
+    }
+
+    if (Platform.OS == 'android') {
+        PADDING_VER = 7
+    }
+
+    if (width >= 700) {
+        WIDTH = (width - 50) / 4
+    }
+    if (width >= 1024) {
+        WIDTH = (width - 60) / 5
+        IMAGE_HEIGHT = height * .25
+    }
+    //
     const dispatch = useDispatch()
     const selectedProduct = (item) => dispatch({
         type: ACTION_TYPES.ADD_TO_SHOPPING_LIST,
@@ -78,13 +109,6 @@ const ProductList = () => {
     const { items } = useSelector(state => state.shoppingListReducer.listProduct)
 
     const navigation = useNavigation()
-    let initialColumn = 2
-    if (width >= 700) {
-        initialColumn = 4
-    }
-    if (width >= 1024) {
-        initialColumn = 5
-    }
 
     const [errorSnackbarVisible, setErrorSnackbarVisible] = useState(false)
     const ErrorSnackbar = () => {
@@ -161,19 +185,24 @@ const ProductList = () => {
                 <FlatList
                     data={DATA}
                     keyExtractor={item => item.id.toString()}
-                    numColumns={initialColumn}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.itemWrapper}
+                                style={[styles.itemWrapper, {
+                                    width: WIDTH,
+                                    marginHorizontal: MARGIN_HO
+                                }]}
                                 activeOpacity={0.7}
                                 onPress={() => navigation.navigate('ProductDetails')}
                             >
                                 <Image
                                     source={item.image}
-                                    style={styles.imageItem}
+                                    style={[styles.imageItem, {
+                                        width: '100%',
+                                        height: IMAGE_HEIGHT
+                                    }]}
                                 />
                                 <View style={styles.itemDetailsWrapper}>
                                     <Text numberOfLines={2} style={styles.itemName}>{item.name}</Text>
@@ -185,19 +214,22 @@ const ProductList = () => {
                                     <Caption numberOfLines={1} style={styles.originalPrice}>Original Price {item.originalPrice}</Caption>
                                     <Subheading numberOfLines={1} style={styles.salePrice}>{item.salePrice}</Subheading>
                                     <TouchableOpacity
-                                        style={styles.addToCartWrapper}
+                                        style={[styles.addToCartWrapper, {
+                                            paddingVertical: PADDING_VER
+                                        }]}
                                         onPress={() => onAddToBagButtonPressed(item)}
                                     >
                                         <Text numberOfLines={1} style={styles.addToCartText}>Add to Cart</Text>
                                     </TouchableOpacity>
                                 </View>
-
                             </TouchableOpacity>
                         )
                     }}
                     contentContainerStyle={{
                         marginLeft: 5,
-                        paddingBottom: setHeight(7)
+                        paddingBottom: height * .07,
+                        flexDirection: 'row',
+                        flexWrap: 'wrap'
                     }}
                 />
                 <ErrorSnackbar />
@@ -209,40 +241,16 @@ const ProductList = () => {
 
 export default ProductList
 
-let WIDTH = (width - 30) / 2
-let PADDING_VER = 14
-let MARGIN_HO = 5
-const ratio = PixelRatio.get()
-
-if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
-    PADDING_VER = 7
-}
-
-if (Platform.OS == 'android') {
-    PADDING_VER = 7
-}
-
-if (width >= 700) {
-    WIDTH = (width - 50) / 4
-}
-if (width >= 1024) {
-    WIDTH = (width - 60) / 5
-}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1
     },
     itemWrapper: {
-        width: WIDTH,
         backgroundColor: COLORS.white,
         marginTop: 10,
-        marginHorizontal: MARGIN_HO,
         borderRadius: 10,
     },
     imageItem: {
-        width: '100%',
-        height: setHeight(18),
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10
     },
@@ -268,7 +276,6 @@ const styles = StyleSheet.create({
     },
     addToCartWrapper: {
         backgroundColor: COLORS.primary,
-        paddingVertical: PADDING_VER,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'

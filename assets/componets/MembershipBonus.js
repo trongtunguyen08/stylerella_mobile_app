@@ -1,5 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Image, Animated } from 'react-native'
+import {
+    StyleSheet,
+    View,
+    Image,
+    Animated,
+    useWindowDimensions
+} from 'react-native'
 import { Text, Title } from 'react-native-paper'
 
 import { t } from '../locales/index'
@@ -7,9 +13,19 @@ import { FONTS, COLORS } from '../contants/contants'
 import { TouchableOpacity } from 'react-native'
 
 const MembershipBonus = (props) => {
+    let RIGHT = 0
+    const { width, height } = useWindowDimensions()
+    if (width >= 700) {
+        RIGHT = width * .1
+    }
+    if (width >= 1024) {
+        RIGHT = width * .35
+    }
     const { goBack } = props
     return (
-        <Animated.View style={styles.container}>
+        <Animated.View style={[styles.container, {
+            right: RIGHT,
+        }]}>
             <Title style={[styles.text, styles.headerText]}>{t('membership_bonus')}</Title>
             <View style={styles.divider} />
             <View style={styles.itemWrapper}>
@@ -36,7 +52,6 @@ export default MembershipBonus
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        right: 0,
         top: -50,
         backgroundColor: 'rgba(237, 175, 168, 0.7)',
         padding: 25,

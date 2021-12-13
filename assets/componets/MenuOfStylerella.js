@@ -1,5 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StyleSheet, Animated, TouchableOpacity, View, Image, Platform, PixelRatio } from 'react-native'
+import {
+    StyleSheet,
+    Animated,
+    TouchableOpacity,
+    View,
+    Image,
+    Platform,
+    PixelRatio,
+    useWindowDimensions
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Divider } from 'react-native-elements'
 import { Text, Title } from 'react-native-paper'
@@ -10,6 +19,28 @@ import AccountDetails from './AccountDetails'
 
 
 const MenuOfStylerella = () => {
+    const { width, height } = useWindowDimensions()
+    let MENU_WIDTH = width * .75
+    let LOGO_SIZE = 45
+    let MARGIN_LEFT = 5
+
+    const ratio = PixelRatio.get()
+
+    if (Platform.OS == 'ios' && ratio < 3) {
+        LOGO_SIZE = 35
+    }
+
+    if (width >= 700) {
+        MENU_WIDTH = width * .5
+        LOGO_SIZE = 50
+        MARGIN_LEFT = width * .1
+    }
+
+    if (width >= 1024) {
+        MENU_WIDTH = width * .35
+        LOGO_SIZE = 50
+        MARGIN_LEFT = width * .24
+    }
     const navigation = useNavigation()
     const [rootMenu, setRootMenu] = useState(true)
     const menuOpacity = useRef(new Animated.Value(0)).current
@@ -38,13 +69,18 @@ const MenuOfStylerella = () => {
                 rootMenu
                     ?
                     <Animated.View style={[styles.menuContainer, {
-                        opacity: menuOpacity
+                        opacity: menuOpacity,
+                        width: MENU_WIDTH,
+                        marginLeft: MARGIN_LEFT
                     }]}>
                         <View style={styles.menuTitleWrapper}>
                             <Title style={styles.menuTitleText}>{t('menu_of_stylerella')}</Title>
                             <Image
                                 source={IMAGES.STYLERELLA2}
-                                style={styles.stylerellaLogo}
+                                style={[styles.stylerellaLogo, {
+                                    width: LOGO_SIZE,
+                                    height: LOGO_SIZE
+                                }]}
                                 resizeMode='contain'
                             />
                         </View>
@@ -119,32 +155,11 @@ const MenuOfStylerella = () => {
 
 export default MenuOfStylerella
 
-let MENU_WIDTH = setWidth(75)
-let LOGO_SIZE = 45
-
-const ratio = PixelRatio.get()
-
-if (Platform.OS == 'ios' && ratio < 3) {
-    LOGO_SIZE = 35
-}
-
-if (width >= 700) {
-    MENU_WIDTH = setWidth(50)
-    LOGO_SIZE = 50
-}
-
-if (width >= 1024) {
-    MENU_WIDTH = setWidth(35)
-    LOGO_SIZE = 50
-}
-
 const styles = StyleSheet.create({
     menuContainer: {
         backgroundColor: 'rgba(237, 175, 168, 0.7)',
-        width: MENU_WIDTH,
         borderRadius: 5,
         marginBottom: 15,
-        marginLeft: 2,
         padding: 5,
     },
     menuTitleWrapper: {
@@ -158,8 +173,6 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.MeridiesAntiqua
     },
     stylerellaLogo: {
-        width: LOGO_SIZE,
-        height: LOGO_SIZE,
         tintColor: COLORS.white,
         marginLeft: 10
     },

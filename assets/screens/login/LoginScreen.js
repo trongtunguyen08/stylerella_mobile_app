@@ -1,5 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Animated, View, StatusBar, TouchableOpacity, Image, ScrollView, ImageBackground, Switch, BackHandler } from 'react-native'
+import {
+    Animated,
+    View,
+    StatusBar,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    ImageBackground,
+    Switch,
+    BackHandler,
+    useWindowDimensions,
+    Platform,
+    PixelRatio
+} from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, Title, Caption } from 'react-native-paper'
@@ -13,6 +26,26 @@ import InputCustom from '../../componets/InputCustom'
 
 
 const LoginScreen = () => {
+    const { width, height } = useWindowDimensions()
+    const ratio = PixelRatio.get()
+    let LOGO_SIZE = 35
+    let BUTTON_WIDTH = width * .65
+    let BUTTON_HEIGHT = width * .18
+    let REMEMBER_CONTENT_WIDTH = '100%'
+    if (width >= 700) {
+        BUTTON_WIDTH = width * .45
+        BUTTON_HEIGHT = width * .1
+        REMEMBER_CONTENT_WIDTH = '70%'
+    }
+    if (width >= 1024) {
+        BUTTON_WIDTH = width * .4
+        BUTTON_HEIGHT = width * .07
+        REMEMBER_CONTENT_WIDTH = '50%'
+    }
+    if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 2.5)) {
+        LOGO_SIZE = 30
+    }
+
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
 
@@ -74,11 +107,16 @@ const LoginScreen = () => {
             }
             {/* Header */}
             <View
-                style={styles.headerContainer}
+                style={[styles.headerContainer, {
+                    width: width,
+                    height: height * .11 + StatusBar.currentHeight / 2,
+                }]}
             >
                 <SafeAreaProvider>
                     <SafeAreaView>
-                        <View style={styles.headerContent}>
+                        <View style={[styles.headerContent, {
+                            width: width
+                        }]}>
                             <TouchableOpacity
                                 style={styles.headerBackIcon}
                                 onPress={() => navigation.goBack()}
@@ -92,7 +130,10 @@ const LoginScreen = () => {
                             <Title style={styles.headerText}>{t('login')}</Title>
                             <Image
                                 source={IMAGES.STYLERELLA2}
-                                style={styles.headerRightIamge}
+                                style={[styles.headerRightIamge, {
+                                    width: LOGO_SIZE,
+                                    height: LOGO_SIZE
+                                }]}
                             />
                         </View>
                     </SafeAreaView>
@@ -123,7 +164,9 @@ const LoginScreen = () => {
                         placeholder='Password'
                         isPassword={true}
                     />
-                    <View style={styles.rememberContent}>
+                    <View style={[styles.rememberContent, {
+                        width: REMEMBER_CONTENT_WIDTH
+                    }]}>
                         <View style={styles.rememberMeWrapper}>
                             <Switch
                                 trackColor={{ false: "#767577", true: "#EEE" }}
@@ -153,10 +196,15 @@ const LoginScreen = () => {
                     >
                         <ImageBackground
                             source={IMAGES.BUTTON}
-                            style={styles.registerButtonWrapper}
+                            style={[styles.registerButtonWrapper, {
+                                width: BUTTON_WIDTH,
+                                height: BUTTON_HEIGHT
+                            }]}
                             resizeMode='stretch'
                         >
-                            <Text style={styles.registerText}>{t('login')}</Text>
+                            <Text style={[styles.registerText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>{t('login')}</Text>
                         </ImageBackground>
                     </TouchableOpacity>
                 </Animated.View>

@@ -1,10 +1,30 @@
 import React from 'react'
-import { StyleSheet, Animated } from 'react-native'
+import {
+    StyleSheet,
+    Animated,
+    useWindowDimensions
+} from 'react-native'
 import LottieView from 'lottie-react-native'
 
-import { IMAGES, width, setWidth, setHeight } from '../contants/contants'
+import { IMAGES } from '../contants/contants'
 
 const FallLeaf = (props) => {
+    const { width, height } = useWindowDimensions()
+    let FALL_LEAF_WIDTH = width * .1
+    let FALL_LEAF_TOP = height * .53
+    let FALL_LEAF_LEFT = width + width * .54
+
+    if (width >= 700) {
+        FALL_LEAF_WIDTH = width * .08
+        FALL_LEAF_TOP = height * .45
+        FALL_LEAF_LEFT = width + width * .04
+    }
+
+    if (width >= 1024) {
+        FALL_LEAF_WIDTH = width * .045
+        FALL_LEAF_TOP = height * .5
+        FALL_LEAF_LEFT = width * .52
+    }
     const { backgroundOpacity, treeTranslateY } = props
     return (
         <>
@@ -15,25 +35,27 @@ const FallLeaf = (props) => {
                         {
                             translateY: treeTranslateY
                         }
-                    ]
+                    ],
+                    top: FALL_LEAF_TOP,
+                    left: FALL_LEAF_LEFT
                 }]}
             >
                 <LottieView
-                    style={styles.fallLeaf}
+                    style={{ width: FALL_LEAF_WIDTH }}
                     source={IMAGES.FALL_LEAF}
                     autoPlay
                     loop
                     speed={0.5}
                 />
                 <LottieView
-                    style={styles.fallLeaf}
+                    style={{ width: FALL_LEAF_WIDTH }}
                     source={IMAGES.FALL_LEAF}
                     autoPlay
                     loop
                     speed={0.5}
                 />
                 <LottieView
-                    style={styles.fallLeaf}
+                    style={{ width: FALL_LEAF_WIDTH }}
                     source={IMAGES.FALL_LEAF}
                     autoPlay
                     loop
@@ -46,30 +68,9 @@ const FallLeaf = (props) => {
 
 export default FallLeaf
 
-let FALL_LEAF_WIDTH = setWidth(10)
-let FALL_LEAF_TOP = setHeight(53)
-let FALL_LEAF_LEFT = width + setWidth(54)
-
-if (width >= 700) {
-    FALL_LEAF_WIDTH = setWidth(8)
-    FALL_LEAF_TOP = setHeight(45)
-    FALL_LEAF_LEFT = width + setWidth(4)
-}
-
-if (width >= 1024) {
-    FALL_LEAF_WIDTH = setWidth(4.5)
-    FALL_LEAF_TOP = setHeight(50)
-    FALL_LEAF_LEFT = setWidth(52)
-}
-
 const styles = StyleSheet.create({
     fallLeafWrapper: {
         position: 'absolute',
-        top: FALL_LEAF_TOP,
-        left: FALL_LEAF_LEFT,
         zIndex: 6
-    },
-    fallLeaf: {
-        width: FALL_LEAF_WIDTH
-    },
+    }
 })

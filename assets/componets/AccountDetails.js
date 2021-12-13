@@ -1,5 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StyleSheet, Animated, TouchableOpacity, View, Image, Platform, PixelRatio } from 'react-native'
+import {
+    StyleSheet,
+    Animated,
+    TouchableOpacity,
+    View,
+    Image,
+    Platform,
+    PixelRatio,
+    useWindowDimensions
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Divider } from 'react-native-elements'
 import { Text, Title } from 'react-native-paper'
@@ -10,6 +19,25 @@ import MembershipBonus from './MembershipBonus'
 
 
 const AccountDetails = (props) => {
+    const { width, height } = useWindowDimensions()
+    let MENU_WIDTH = width * .8
+    let LOGO_SIZE = 45
+    let MARGIN_LEFT = 5
+    const ratio = PixelRatio.get()
+    if (Platform.OS == 'ios' && ratio < 3) {
+        LOGO_SIZE = 35
+    }
+    if (width >= 700) {
+        MENU_WIDTH = width * .55
+        LOGO_SIZE = 50
+        MARGIN_LEFT = width * .2
+    }
+    if (width >= 1024) {
+        MENU_WIDTH = width * .40
+        LOGO_SIZE = 50
+        MARGIN_LEFT = width * .15
+    }
+
     const { onBackPressed } = props
     const navigation = useNavigation()
     const [membershipBonusMenu, setMembershipBonusMenu] = useState(false)
@@ -35,13 +63,18 @@ const AccountDetails = (props) => {
                     {
                         translateX
                     }
-                ]
+                ],
+                width: MENU_WIDTH,
+                marginLeft: MARGIN_LEFT
             }]}>
                 <View style={styles.menuTitleWrapper}>
                     <Title style={styles.menuTitleText}>{t('account_details')}</Title>
                     <Image
                         source={IMAGES.STYLERELLA2}
-                        style={styles.stylerellaLogo}
+                        style={[styles.stylerellaLogo, {
+                            width: LOGO_SIZE,
+                            height: LOGO_SIZE
+                        }]}
                         resizeMode='contain'
                     />
                 </View>
@@ -105,32 +138,11 @@ const AccountDetails = (props) => {
 
 export default AccountDetails
 
-let MENU_WIDTH = setWidth(80)
-let LOGO_SIZE = 45
-
-const ratio = PixelRatio.get()
-
-if (Platform.OS == 'ios' && ratio < 3) {
-    LOGO_SIZE = 35
-}
-
-if (width >= 700) {
-    MENU_WIDTH = setWidth(55)
-    LOGO_SIZE = 50
-}
-
-if (width >= 1024) {
-    MENU_WIDTH = setWidth(40)
-    LOGO_SIZE = 50
-}
-
 const styles = StyleSheet.create({
     menuContainer: {
         backgroundColor: 'rgba(237, 175, 168, 0.7)',
-        width: MENU_WIDTH,
         borderRadius: 5,
         marginBottom: 15,
-        marginLeft: 2,
         padding: 5,
     },
     menuTitleWrapper: {
@@ -144,8 +156,6 @@ const styles = StyleSheet.create({
         fontFamily: 'MeridiesAntiqua'
     },
     stylerellaLogo: {
-        width: LOGO_SIZE,
-        height: LOGO_SIZE,
         tintColor: COLORS.white,
         marginLeft: 10
     },

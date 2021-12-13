@@ -7,13 +7,17 @@ import {
     Animated,
     Pressable,
     TouchableOpacity,
-    Alert, BackHandler
+    Alert,
+    BackHandler,
+    useWindowDimensions,
+    Platform,
+    PixelRatio
 } from 'react-native'
 import { Text } from 'react-native-paper'
 import * as Haptics from 'expo-haptics'
 
 import { styles } from './styles'
-import { IMAGES, width, COLORS, FONTS } from '../../contants/contants'
+import { IMAGES, COLORS } from '../../contants/contants'
 import { t } from '../../locales/index'
 import { useNavigation } from '@react-navigation/native'
 import { getRandomNumber } from '../../contants/getRandomNumber'
@@ -31,6 +35,120 @@ import FallingSnow from '../../componets/FallingSnow'
 const BackgroundAnimated = Animated.createAnimatedComponent(ImageBackground)
 
 const MapScreen = () => {
+    const { width, height } = useWindowDimensions()
+    const setHeight = (value) => {
+        return ((height + StatusBar.currentHeight) * value) / 100
+    }
+    let IMAGE_WIDTH = width * 3
+    let IMAGE_HEIGHT = setHeight(100)
+    let BUTTON_WIDTH = width * .35
+    let BUTTON_HEIGHT = width * .18
+
+    let CITY_GIRL_BUILDING_WIDTH = width * .6
+    let CITY_GIRL_BUILDING_HEIGHT = setHeight(45)
+    let CITY_GIRL_BUILDING_TOP = setHeight(28)
+    let CITY_GIRL_BUILDING_LEFT = width * .1
+    let CITY_GIRL_BUTTON_BOTTOM = setHeight(25)
+    let CITY_GIRL_BUTTON_LEFT = width * .27
+
+    let MIRROR_WIDTH = width * .25
+    let MIRROR_HEIGHT = setHeight(33)
+    let MIRROR_RIGHT = width * .75
+    let MIRROR_TOP = setHeight(37)
+    let YOGA_LIVING_BUTTON_RIGHT = width * .35
+    let YOGA_LIVING_BUTTON_TOP = setHeight(32)
+
+    let PICNIC_BUTTON_TOP = setHeight(23)
+    let PICNIC_BUTTON_LEFT = width * .65
+
+    let TREE_WIDTH = width * .61
+    let TREE_HEIGHT = setHeight(44)
+    let TREE_TOP = setHeight(27.5)
+    let TREE_LEFT = width + width * .2
+
+    let BALLOON_WIDTH = width * .32
+    let BALLOON_HEIGHT = setHeight(20)
+    let BALLOON_TOP = setHeight(4)
+    let BALLON_LEFT = width * .65
+
+    const ratio = PixelRatio.get()
+
+    // iOS
+    if (Platform.OS === 'ios' && ratio < 3) {
+        TREE_WIDTH = width * .6
+        TREE_HEIGHT = setHeight(46)
+        TREE_TOP = setHeight(26)
+    }
+
+    // Android
+    if (Platform.OS === 'android' && ratio <= 2) {
+        TREE_WIDTH = width * .6
+        TREE_HEIGHT = height * .46
+        TREE_TOP = setHeight(26)
+        CITY_GIRL_BUILDING_TOP = setHeight(28)
+        BALLOON_TOP = setHeight(5)
+        MIRROR_TOP = setHeight(37)
+    }
+
+    if (Platform.OS === 'android' && ratio <= 1.69) {
+        BUTTON_HEIGHT = width * .13
+        TREE_TOP = setHeight(26)
+        CITY_GIRL_BUILDING_TOP = setHeight(27)
+        MIRROR_TOP = setHeight(37)
+    }
+
+    if (width >= 700) {
+        IMAGE_WIDTH = width * 2
+        BUTTON_WIDTH = width * .25
+        BUTTON_HEIGHT = width * .1
+        CITY_GIRL_BUTTON_BOTTOM = setHeight(26)
+        CITY_GIRL_BUTTON_LEFT = width * .21
+        YOGA_LIVING_BUTTON_RIGHT = width * .21
+        YOGA_LIVING_BUTTON_TOP = setHeight(35)
+        TREE_WIDTH = width * .42
+        TREE_TOP = setHeight(26)
+        TREE_LEFT = width * .78
+        BALLOON_WIDTH = width * .27
+        BALLOON_HEIGHT = setHeight(23)
+        BALLOON_TOP = setHeight(4)
+        BALLON_LEFT = width * .38
+        PICNIC_BUTTON_TOP = setHeight(26)
+        PICNIC_BUTTON_LEFT = width * .41
+        CITY_GIRL_BUILDING_WIDTH = width * .4
+        CITY_GIRL_BUILDING_HEIGHT = setHeight(40)
+        CITY_GIRL_BUILDING_TOP = setHeight(33)
+        CITY_GIRL_BUILDING_LEFT = width * .06
+        CITY_GIRL_BUTTON_LEFT = width * .16
+        MIRROR_WIDTH = width * .16
+        MIRROR_RIGHT = width * .51
+    }
+
+    if (width >= 1024) {
+        IMAGE_WIDTH = width
+        BUTTON_WIDTH = width * .15
+        BUTTON_HEIGHT = width * .07
+        CITY_GIRL_BUTTON_BOTTOM = setHeight(26)
+        CITY_GIRL_BUTTON_LEFT = width * .21
+        YOGA_LIVING_BUTTON_RIGHT = width * .1
+        YOGA_LIVING_BUTTON_TOP = setHeight(35)
+        TREE_WIDTH = width * .24
+        TREE_TOP = setHeight(26)
+        TREE_LEFT = width * .37
+        BALLOON_WIDTH = width * .17
+        BALLOON_HEIGHT = setHeight(23)
+        BALLOON_TOP = setHeight(5)
+        BALLON_LEFT = width * .17
+        PICNIC_BUTTON_TOP = setHeight(27)
+        PICNIC_BUTTON_LEFT = width * .19
+        CITY_GIRL_BUILDING_WIDTH = width * .2
+        CITY_GIRL_BUILDING_HEIGHT = setHeight(37)
+        CITY_GIRL_BUILDING_TOP = setHeight(35)
+        CITY_GIRL_BUILDING_LEFT = width * .035
+        CITY_GIRL_BUTTON_LEFT = width * .07
+        MIRROR_WIDTH = width * .08
+        MIRROR_RIGHT = width * .255
+    }
+    //
     const navigation = useNavigation()
     const [isLoading, setIsLoading] = useState(true)
     let ref = useRef()
@@ -277,7 +395,9 @@ const MapScreen = () => {
                 <BackgroundAnimated
                     source={IMAGES.MAP}
                     style={[styles.imageBackground, {
-                        opacity: backgroundOpacity
+                        opacity: backgroundOpacity,
+                        width: IMAGE_WIDTH,
+                        height: IMAGE_HEIGHT
                     }]}
                     resizeMode='stretch'
                     onLoadEnd={onBackgroundEndLoad}
@@ -285,19 +405,24 @@ const MapScreen = () => {
                     {/* Tree */}
                     <TouchableOpacity
                         onPress={onTreePressed}
-                        style={styles.treeWrapper}
+                        style={[styles.treeWrapper, {
+                            top: TREE_TOP,
+                            left: TREE_LEFT
+                        }]}
                         activeOpacity={0.8}
                     >
                         <Animated.Image
                             source={IMAGES.TREE}
-                            style={[styles.tree, {
+                            style={{
                                 opacity: backgroundOpacity,
                                 transform: [
                                     {
                                         translateY: treeTranslateY
                                     }
-                                ]
-                            }]}
+                                ],
+                                width: TREE_WIDTH,
+                                height: TREE_HEIGHT
+                            }}
                             resizeMode={'stretch'}
 
                         />
@@ -306,18 +431,23 @@ const MapScreen = () => {
                     {/* City Girl Bulding */}
                     <TouchableOpacity
                         onPress={onCytiGirlBuildingPressed}
-                        style={styles.cityGirlBuildingWrapper}
+                        style={[styles.cityGirlBuildingWrapper, {
+                            top: CITY_GIRL_BUILDING_TOP,
+                            left: CITY_GIRL_BUILDING_LEFT
+                        }]}
                         activeOpacity={0.9}
                     >
                         <Animated.Image
                             source={IMAGES.CITY_GIRL}
-                            style={[styles.cityGirlBuilding, {
+                            style={{
                                 transform: [
                                     {
                                         scale: cityGirlBuildingScale
                                     }
-                                ]
-                            }]}
+                                ],
+                                width: CITY_GIRL_BUILDING_WIDTH,
+                                height: CITY_GIRL_BUILDING_HEIGHT
+                            }}
                             resizeMode='stretch'
                         />
                     </TouchableOpacity>
@@ -331,7 +461,11 @@ const MapScreen = () => {
                                 {
                                     scale: cityGirlButtonScale
                                 }
-                            ]
+                            ],
+                            width: BUTTON_WIDTH,
+                            height: BUTTON_HEIGHT,
+                            bottom: CITY_GIRL_BUTTON_BOTTOM,
+                            left: CITY_GIRL_BUTTON_LEFT
                         }]}
                         source={IMAGES.BUTTON}
                         resizeMode={'stretch'}
@@ -343,7 +477,9 @@ const MapScreen = () => {
                                 navigation.navigate('Zone', { headerTitle: t('city_girl') })
                             }}
                         >
-                            <Text style={styles.buttonText}>{t('city_girl')}</Text>
+                            <Text style={[styles.buttonText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>{t('city_girl')}</Text>
                         </Pressable>
                     </BackgroundAnimated>
 
@@ -355,15 +491,19 @@ const MapScreen = () => {
                                 {
                                     scale: mirrorScale
                                 }
-                            ]
+                            ],
+                            right: MIRROR_RIGHT,
+                            top: MIRROR_TOP
                         }]}
                         activeOpacity={0.9}
                     >
                         <Animated.Image
                             source={IMAGES.MIRROR}
-                            style={[styles.mirror, {
-                                opacity: mirrorOpacity
-                            }]}
+                            style={{
+                                opacity: mirrorOpacity,
+                                width: MIRROR_WIDTH,
+                                height: MIRROR_HEIGHT
+                            }}
                             resizeMode='stretch'
                         />
                     </TouchableOpacity>
@@ -377,7 +517,11 @@ const MapScreen = () => {
                                 {
                                     scale: yogaButtonScale
                                 }
-                            ]
+                            ],
+                            width: BUTTON_WIDTH,
+                            height: BUTTON_HEIGHT,
+                            right: YOGA_LIVING_BUTTON_RIGHT,
+                            top: YOGA_LIVING_BUTTON_TOP
                         }]}
                         source={IMAGES.BUTTON}
                         resizeMode={'stretch'}
@@ -386,7 +530,9 @@ const MapScreen = () => {
                             hitSlop={{ top: 20, right: 60, bottom: 20, left: 60 }}
                             onPress={() => alert("Yoga Living")}
                         >
-                            <Text style={styles.buttonText}>{t('yoga_living')}</Text>
+                            <Text style={[styles.buttonText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>{t('yoga_living')}</Text>
                         </Pressable>
                     </BackgroundAnimated>
 
@@ -394,11 +540,14 @@ const MapScreen = () => {
                     <TouchableOpacity
                         activeOpacity={0.9}
                         onPress={onBalloonPressed}
-                        style={styles.balloonWrapper}
+                        style={[styles.balloonWrapper, {
+                            top: BALLOON_TOP,
+                            left: BALLON_LEFT
+                        }]}
                     >
                         <Animated.Image
                             source={IMAGES.BALLOON}
-                            style={[styles.balloon, {
+                            style={{
                                 opacity: buttonOpacity,
                                 transform: [
                                     {
@@ -407,8 +556,10 @@ const MapScreen = () => {
                                     {
                                         scale: balloonScale
                                     }
-                                ]
-                            }]}
+                                ],
+                                width: BALLOON_WIDTH,
+                                height: BALLOON_HEIGHT
+                            }}
                             resizeMode={'stretch'}
                         />
                     </TouchableOpacity>
@@ -423,7 +574,11 @@ const MapScreen = () => {
                                 {
                                     scale: picnicButtonScale
                                 }
-                            ]
+                            ],
+                            width: BUTTON_WIDTH,
+                            height: BUTTON_HEIGHT,
+                            top: PICNIC_BUTTON_TOP,
+                            left: PICNIC_BUTTON_LEFT
                         }]}
                         source={IMAGES.BUTTON}
                         resizeMode={'stretch'}
@@ -432,7 +587,9 @@ const MapScreen = () => {
                             hitSlop={{ top: 20, right: 60, bottom: 20, left: 60 }}
                             onPress={() => alert("Picnic")}
                         >
-                            <Text style={styles.buttonText}>{t('picnic')}</Text>
+                            <Text style={[styles.buttonText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>{t('picnic')}</Text>
                         </Pressable>
                     </BackgroundAnimated>
 

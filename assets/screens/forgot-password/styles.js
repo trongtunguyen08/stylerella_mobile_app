@@ -16,8 +16,6 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     headerContainer: {
-        width: '100%',
-        height: setHeight(11) + StatusBar.currentHeight / 2,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
@@ -28,8 +26,7 @@ export const styles = StyleSheet.create({
         marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : 15,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        width: setWidth(100)
+        flexDirection: 'row'
     },
     headerText: {
         fontFamily: FONTS.MeridiesAntiqua,
@@ -42,8 +39,6 @@ export const styles = StyleSheet.create({
         left: 20,
     },
     headerRightIamge: {
-        width: LOGO_SIZE,
-        height: LOGO_SIZE,
         right: 20,
         position: 'absolute',
         tintColor: COLORS.white
@@ -65,16 +60,13 @@ export const styles = StyleSheet.create({
     body: {
         padding: 20
     },
-    registerButtonWrapper: {
-        width: setWidth(65),
-        height: setWidth(18),
+    forgotButtonWrapper: {
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    registerText: {
+    forgotText: {
         color: COLORS.white,
-        fontFamily: FONTS.MeridiesAntiqua,
-        marginBottom: setWidth(18) / 5
+        fontFamily: FONTS.MeridiesAntiqua
     },
 })

@@ -1,6 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Platform, TouchableOpacity } from 'react-native'
-import { StyleSheet, Text, View, ImageBackground, FlatList, Image, PixelRatio, Animated, StatusBar } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    ImageBackground,
+    FlatList,
+    Image,
+    PixelRatio,
+    Animated,
+    StatusBar,
+    useWindowDimensions
+} from 'react-native'
 import { IMAGES, setHeight, setWidth, COLORS, width } from '../contants/contants'
 import { useNavigation } from '@react-navigation/native'
 
@@ -28,14 +39,25 @@ const Data = [
 ]
 
 const ShopList = () => {
-    const navigation = useNavigation()
-    let initialNum = 2
+    const { width, height } = useWindowDimensions()
+    let WIDTH = (width - 60) / 2
+    let HEIGHT = height * .35
+    const ratio = PixelRatio.get()
+
+    if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
+        HEIGHT = height * .39
+    }
+
     if (width >= 700) {
-        initialNum = 4
+        WIDTH = (width - 100) / 4
+        HEIGHT = height * .3
     }
     if (width >= 1024) {
-        initialNum = 5
+        WIDTH = (width - 120) / 5
+        HEIGHT = height * .42
     }
+
+    const navigation = useNavigation()
 
     const onBrandPress = (brandName) => {
         navigation.navigate('VirtualShop', { headerTitle: brandName })
@@ -50,7 +72,6 @@ const ShopList = () => {
             <FlatList
                 data={Data}
                 keyExtractor={item => item.index.toString()}
-                numColumns={initialNum}
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity
@@ -60,7 +81,10 @@ const ShopList = () => {
                         >
                             <Image
                                 source={item.image}
-                                style={styles.itemImage}
+                                style={[styles.itemImage, {
+                                    width: WIDTH,
+                                    height: HEIGHT
+                                }]}
                                 resizeMode='stretch'
                             />
                         </TouchableOpacity>
@@ -68,7 +92,9 @@ const ShopList = () => {
                 }}
                 contentContainerStyle={{
                     marginLeft: 10,
-                    paddingBottom: setHeight(7)
+                    paddingBottom: height * .07,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap'
                 }}
             />
         </ImageBackground>
@@ -77,31 +103,11 @@ const ShopList = () => {
 
 export default ShopList
 
-let WIDTH = (width - 60) / 2
-let HEIGHT = setHeight(35)
-const ratio = PixelRatio.get()
-console.log(width)
-
-if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
-    HEIGHT = setHeight(39)
-}
-
-if (width >= 700) {
-    WIDTH = (width - 100) / 4
-    HEIGHT = setHeight(30)
-}
-if (width >= 1024) {
-    WIDTH = (width - 120) / 5
-    HEIGHT = setHeight(42)
-}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1
     },
     itemImage: {
-        width: WIDTH,
-        height: HEIGHT,
         marginHorizontal: 10,
         marginTop: 10
     }

@@ -7,7 +7,10 @@ import {
     TouchableOpacity,
     Animated,
     Easing,
-    BackHandler
+    BackHandler,
+    useWindowDimensions,
+    Platform,
+    PixelRatio
 } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
@@ -16,10 +19,39 @@ import LottieView from 'lottie-react-native'
 import { Text } from 'react-native-paper'
 
 import { styles } from './styles'
-import { IMAGES, setWidth, width } from '../../contants/contants'
+import { IMAGES } from '../../contants/contants'
 import { t } from '../../locales/index'
 
 const LandingScreen = () => {
+    const { width, height } = useWindowDimensions()
+    let BUTTON_WIDTH = width * .65
+    let BUTTON_HEIGHT = width * .18
+    let ICON = width * .2
+    let LOGO_WIDTH = width * .82
+    let LOGO_HEIGHT = height * .47
+    let STYLERELLA_WIDTH = width * .3
+    let BUTTERFLY_ANIMATION_WIDTH = width * .12
+
+    const ratio = PixelRatio.get()
+
+    if (width >= 700) {
+        BUTTON_WIDTH = width * .45
+        BUTTON_HEIGHT = width * .1
+        ICON = width * .12
+        STYLERELLA_WIDTH = width * .2
+        FONT_SIZE = 20
+        BUTTERFLY_ANIMATION_WIDTH = width * .06
+    }
+
+    if (width >= 1024) {
+        BUTTON_WIDTH = width * .35
+        BUTTON_HEIGHT = width * .06
+        ICON = width * .08
+        STYLERELLA_WIDTH = width * .1
+        FONT_SIZE = 20
+        BUTTERFLY_ANIMATION_WIDTH = width * .04
+    }
+
     const navigation = useNavigation()
     const buttonOpacity = useRef(new Animated.Value(0)).current
     const buttonTranslateY = buttonOpacity.interpolate(
@@ -302,14 +334,16 @@ const LandingScreen = () => {
                         {/* Image header */}
                         <Animated.Image
                             source={IMAGES.LOGO}
-                            style={[styles.logo, {
+                            style={{
                                 opacity: buttonOpacity,
                                 transform: [
                                     {
                                         translateY: socialButtonTranslateY
                                     }
-                                ]
-                            }]}
+                                ],
+                                width: LOGO_WIDTH,
+                                height: LOGO_HEIGHT
+                            }}
                             resizeMode='contain'
                         />
 
@@ -322,7 +356,9 @@ const LandingScreen = () => {
                                     {
                                         translateY: socialButtonTranslateY
                                     }
-                                ]
+                                ],
+                                width: STYLERELLA_WIDTH,
+                                height: STYLERELLA_WIDTH
                             }]}
                             resizeMode='contain'
                         />
@@ -355,7 +391,9 @@ const LandingScreen = () => {
                                 autoPlay
                                 loop
                                 speed={resSpeed}
-                                style={styles.butterfly_animation}
+                                style={[styles.butterfly_animation, {
+                                    width: BUTTERFLY_ANIMATION_WIDTH
+                                }]}
                             />
                         </Animated.View>
 
@@ -372,7 +410,8 @@ const LandingScreen = () => {
                                     {
                                         rotate: butterflyRotateForLogin
                                     }
-                                ]
+                                ],
+                                left: width >= 700 ? '12%' : '1%'
                             }]}
                             onLayout={({ nativeEvent }) => {
                                 var { x, y, width, height } = nativeEvent.layout
@@ -385,7 +424,9 @@ const LandingScreen = () => {
                                 autoPlay
                                 loop
                                 speed={logSpeed}
-                                style={styles.butterfly_animation}
+                                style={[styles.butterfly_animation, {
+                                    width: BUTTERFLY_ANIMATION_WIDTH,
+                                }]}
                             />
                         </Animated.View>
 
@@ -402,7 +443,8 @@ const LandingScreen = () => {
                                     {
                                         rotate: butterflyRotateForGuest
                                     }
-                                ]
+                                ],
+                                right: width >= 700 ? '10%' : '2%'
                             }]}
                             onLayout={({ nativeEvent }) => {
                                 var { x, y, width, height } = nativeEvent.layout
@@ -415,7 +457,9 @@ const LandingScreen = () => {
                                 autoPlay
                                 loop
                                 speed={guestSpeed}
-                                style={styles.butterfly_animation}
+                                style={[styles.butterfly_animation, {
+                                    width: BUTTERFLY_ANIMATION_WIDTH
+                                }]}
                             />
                         </Animated.View>
 
@@ -443,10 +487,16 @@ const LandingScreen = () => {
                             >
                                 <ImageBackground
                                     source={IMAGES.BUTTON}
-                                    style={[styles.button, { marginBottom: -15 }]}
+                                    style={[styles.button, {
+                                        marginBottom: -15,
+                                        width: BUTTON_WIDTH,
+                                        height: BUTTON_HEIGHT,
+                                    }]}
                                     resizeMode='stretch'
                                 >
-                                    <Text style={styles.buttonText}>{t('register')}</Text>
+                                    <Text style={[styles.buttonText, {
+                                        marginBottom: BUTTON_HEIGHT / 5
+                                    }]}>{t('register')}</Text>
 
                                 </ImageBackground>
                             </TouchableOpacity>
@@ -473,10 +523,16 @@ const LandingScreen = () => {
                             >
                                 <ImageBackground
                                     source={IMAGES.BUTTON}
-                                    style={[styles.button, { marginBottom: -15 }]}
+                                    style={[styles.button, {
+                                        marginBottom: -15,
+                                        width: BUTTON_WIDTH,
+                                        height: BUTTON_HEIGHT
+                                    }]}
                                     resizeMode='stretch'
                                 >
-                                    <Text style={styles.buttonText}>{t('login')}</Text>
+                                    <Text style={[styles.buttonText, {
+                                        marginBottom: BUTTON_HEIGHT / 5
+                                    }]}>{t('login')}</Text>
 
                                 </ImageBackground>
                             </TouchableOpacity>
@@ -503,10 +559,16 @@ const LandingScreen = () => {
                             >
                                 <ImageBackground
                                     source={IMAGES.BUTTON}
-                                    style={[styles.button, { marginBottom: -15 }]}
+                                    style={[styles.button, {
+                                        marginBottom: -15,
+                                        width: BUTTON_WIDTH,
+                                        height: BUTTON_HEIGHT,
+                                    }]}
                                     resizeMode='stretch'
                                 >
-                                    <Text style={styles.buttonText}>{t('guest')}</Text>
+                                    <Text style={[styles.buttonText, {
+                                        marginBottom: BUTTON_HEIGHT / 5
+                                    }]}>{t('guest')}</Text>
 
                                 </ImageBackground>
                             </TouchableOpacity>
@@ -514,7 +576,10 @@ const LandingScreen = () => {
 
                         {/* Login by social */}
                         <View
-                            style={styles.socialLoginWrapper}
+                            style={[styles.socialLoginWrapper, {
+                                width: BUTTON_WIDTH,
+                                justifyContent: width >= 700 ? 'space-evenly' : 'space-between',
+                            }]}
                         >
                             <TouchableOpacity
                                 activeOpacity={0.6}
@@ -522,14 +587,16 @@ const LandingScreen = () => {
                             >
                                 <Animated.Image
                                     source={IMAGES.GOOGLE}
-                                    style={[styles.socilaIcon, {
+                                    style={{
                                         opacity: buttonOpacity,
                                         transform: [
                                             {
                                                 translateY: socialButtonTranslateY
                                             }
-                                        ]
-                                    }]}
+                                        ],
+                                        width: ICON,
+                                        height: ICON
+                                    }}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity

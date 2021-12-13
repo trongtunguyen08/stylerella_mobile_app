@@ -1,11 +1,35 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { StyleSheet, Text, View, ImageBackground, Animated, StatusBar, Image, TouchableOpacity, BackHandler, Alert } from 'react-native'
-import { Title } from 'react-native-paper'
+import React, { useEffect } from 'react'
+import {
+    StyleSheet,
+    Text,
+    View,
+    ImageBackground,
+    StatusBar,
+    Image,
+    TouchableOpacity,
+    BackHandler,
+    useWindowDimensions
+} from 'react-native'
+import { Title, Headline } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 
-import { COLORS, IMAGES, setWidth, setHeight, FONTS } from '../../contants/contants'
+import { COLORS, IMAGES, FONTS } from '../../contants/contants'
 
 const SuccessScreen = ({ navigation }) => {
+    const { width, height } = useWindowDimensions()
+    let LOGO_SIZE = width * .4
+    let BUTTON_WIDTH = width * .65
+    let BUTTON_HEIGHT = width * .18
+    if (width >= 700) {
+        LOGO_SIZE = width * .25
+        BUTTON_WIDTH = width * .45
+        BUTTON_HEIGHT = width * .1
+    }
+    if (width >= 1024) {
+        LOGO_SIZE = width * .15
+        BUTTON_WIDTH = width * .4
+        BUTTON_HEIGHT = width * .07
+    }
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
@@ -27,14 +51,20 @@ const SuccessScreen = ({ navigation }) => {
                 autoPlay
                 loop={false}
             />
-            <View style={styles.contentView}>
+            <View style={[styles.contentView, {
+                height: height * .6,
+            }]}>
                 <Image
                     source={IMAGES.LOGO_BOLD}
-                    style={styles.logo}
+                    style={{
+                        width: LOGO_SIZE,
+                        height: LOGO_SIZE,
+                        alignSelf: 'center'
+                    }}
                     resizeMode='stretch'
                 />
                 <View style={styles.bodyWrapper}>
-                    <Title style={styles.text}>Successfully Verified</Title>
+                    <Headline style={styles.text}>Successfully Verified</Headline>
                     <Text style={styles.text}>Please enjoy your shop</Text>
                 </View>
                 <TouchableOpacity
@@ -42,10 +72,15 @@ const SuccessScreen = ({ navigation }) => {
                 >
                     <ImageBackground
                         source={IMAGES.BUTTON}
-                        style={styles.buttonWrapper}
+                        style={[styles.buttonWrapper, {
+                            width: BUTTON_WIDTH,
+                            height: BUTTON_HEIGHT,
+                        }]}
                         resizeMode='stretch'
                     >
-                        <Text style={styles.buttonText}>Done</Text>
+                        <Text style={[styles.buttonText, {
+                            marginBottom: BUTTON_HEIGHT / 5
+                        }]}>Done</Text>
                     </ImageBackground>
                 </TouchableOpacity>
             </View>
@@ -63,15 +98,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     contentView: {
-        height: setHeight(60),
         width: '100%',
         justifyContent: 'space-between',
         zIndex: 999
-    },
-    logo: {
-        width: setWidth(40),
-        height: setWidth(40),
-        alignSelf: 'center'
     },
     bodyWrapper: {
         alignItems: 'center'
@@ -81,15 +110,12 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.MeridiesAntiqua
     },
     buttonWrapper: {
-        width: setWidth(65),
-        height: setWidth(18),
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonText: {
         color: COLORS.white,
-        fontFamily: FONTS.MeridiesAntiqua,
-        marginBottom: setWidth(18) / 5
+        fontFamily: FONTS.MeridiesAntiqua
     }
 })

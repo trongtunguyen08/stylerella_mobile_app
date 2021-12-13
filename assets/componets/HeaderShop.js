@@ -1,17 +1,33 @@
 import React from 'react'
-import { Image, ImageBackground, SafeAreaView, StyleSheet, View, StatusBar, Platform, PixelRatio } from 'react-native'
-import { COLORS, FONTS, IMAGES, setHeight, setWidth } from '../contants/contants'
+import {
+    Image,
+    ImageBackground,
+    SafeAreaView,
+    StyleSheet,
+    View,
+    StatusBar,
+    Platform,
+    PixelRatio,
+    useWindowDimensions
+} from 'react-native'
+import { COLORS, FONTS, IMAGES } from '../contants/contants'
 import { Title } from 'react-native-paper'
 
 const HeaderShop = (props) => {
+    const { width, height } = useWindowDimensions()
     const { title } = props
     return (
         <ImageBackground
             source={IMAGES.LANDING_BACKGROUND}
-            style={styles.headerContainer}
+            style={[styles.headerContainer, {
+                width,
+                height: height * .12 + StatusBar.currentHeight / 2,
+            }]}
         >
             <SafeAreaView>
-                <View style={styles.headerContent}>
+                <View style={[styles.headerContent, {
+                    width
+                }]}>
                     <Image
                         source={IMAGES.STYLERELLA2}
                         style={styles.headerLeftIamge}
@@ -35,8 +51,6 @@ if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 
 
 const styles = StyleSheet.create({
     headerContainer: {
-        width: '100%',
-        height: setHeight(12) + StatusBar.currentHeight / 2,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'
@@ -45,8 +59,7 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : 15,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        width: setWidth(100)
+        flexDirection: 'row'
     },
     headerText: {
         fontFamily: FONTS.MeridiesAntiqua,

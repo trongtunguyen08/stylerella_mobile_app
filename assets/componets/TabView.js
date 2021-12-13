@@ -1,11 +1,20 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, Animated, TouchableOpacity, View, PixelRatio, Pressable, BackHandler } from 'react-native'
+import {
+    StyleSheet,
+    Animated,
+    TouchableOpacity,
+    View,
+    PixelRatio,
+    Pressable,
+    BackHandler,
+    useWindowDimensions
+} from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { isIphoneX } from 'react-native-iphone-x-helper'
-import { Text, Title, Caption } from 'react-native-paper'
+import { Text } from 'react-native-paper'
 
-import { COLORS, FONTS, setHeight, setWidth, width } from '../contants/contants'
+import { COLORS, FONTS, setHeight, setWidth } from '../contants/contants'
 import ShopList from './ShopList'
 import ProductList from './PruductList'
 import { t } from '../locales/index'
@@ -13,9 +22,9 @@ const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
 import MenuOfZone from './MenuOfZone'
 import { useNavigation } from '@react-navigation/native'
 
-const TabView = (props) => {
+const TabView = () => {
+    const { width, height } = useWindowDimensions()
     const navigation = useNavigation()
-    const { onItemPressed } = props
     const [tabIndex, setTabIndex] = useState(0)
     const onShopListPress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -56,7 +65,9 @@ const TabView = (props) => {
                     <Pressable
                         onPress={() => onButtonPressed()}
                     >
-                        <View style={styles.filterButtonWrapper}>
+                        <View style={[styles.filterButtonWrapper, {
+                            width: width * .36,
+                        }]}>
                             <Text style={styles.filterButtonText}>{t('filter')}</Text>
                             <AnimatedIcons
                                 name='caret-up-outline'
@@ -96,9 +107,13 @@ const TabView = (props) => {
 
     return (
         <>
-            <Animated.View style={styles.container}>
+            <Animated.View style={[styles.container, {
+                height: height * .055
+            }]}>
                 <TouchableOpacity
-                    style={styles.backIcon}
+                    style={[styles.backIcon, {
+                        width: width * .2,
+                    }]}
                     onPress={() => navigation.goBack()}
                 >
                     <Ionicons
@@ -141,11 +156,9 @@ export default TabView
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems: 'center',
-        height: setHeight(5.5)
+        alignItems: 'center'
     },
     backIcon: {
-        width: setWidth(20),
         backgroundColor: COLORS.white,
         height: '100%',
         alignItems: 'center',
@@ -166,7 +179,6 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     filterButtonWrapper: {
-        width: setWidth(36),
         backgroundColor: COLORS.primary,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,

@@ -1,7 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Animated, View, StatusBar, TouchableOpacity, Image, ScrollView, ImageBackground, Switch, BackHandler } from 'react-native'
+import {
+    Animated,
+    View,
+    StatusBar,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    ImageBackground,
+    Switch,
+    BackHandler,
+    PixelRatio,
+    Platform,
+    useWindowDimensions
+} from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { Text, Title, Caption } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
@@ -12,6 +25,23 @@ import { t } from '../../locales/index'
 import InputCustom from '../../componets/InputCustom'
 
 const ForgotPasswordScreen = () => {
+    const { width, height } = useWindowDimensions()
+    const ratio = PixelRatio.get()
+    let LOGO_SIZE = 35
+    let BUTTON_WIDTH = width * .65
+    let BUTTON_HEIGHT = width * .18
+    if (width >= 700) {
+        BUTTON_WIDTH = width * .45
+        BUTTON_HEIGHT = width * .1
+    }
+    if (width >= 1024) {
+        BUTTON_WIDTH = width * .4
+        BUTTON_HEIGHT = width * .07
+    }
+    if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 2.5)) {
+        LOGO_SIZE = 30
+    }
+
     const navigation = useNavigation()
     const animatedValue = useRef(new Animated.Value(0)).current
     const translateY = animatedValue.interpolate({
@@ -46,11 +76,16 @@ const ForgotPasswordScreen = () => {
         <View style={styles.container}>
             {/* Header */}
             <View
-                style={styles.headerContainer}
+                style={[styles.headerContainer, {
+                    width: width,
+                    height: height * .11 + StatusBar.currentHeight / 2
+                }]}
             >
                 <SafeAreaProvider>
                     <SafeAreaView>
-                        <View style={styles.headerContent}>
+                        <View style={[styles.headerContent, {
+                            width: width
+                        }]}>
                             <TouchableOpacity
                                 style={styles.headerBackIcon}
                                 onPress={() => navigation.goBack()}
@@ -64,7 +99,10 @@ const ForgotPasswordScreen = () => {
                             <Title numberOfLines={1} style={styles.headerText}>Forgot Password</Title>
                             <Image
                                 source={IMAGES.STYLERELLA2}
-                                style={styles.headerRightIamge}
+                                style={[styles.headerRightIamge, {
+                                    width: LOGO_SIZE,
+                                    height: LOGO_SIZE
+                                }]}
                             />
                         </View>
                     </SafeAreaView>
@@ -101,10 +139,15 @@ const ForgotPasswordScreen = () => {
                     >
                         <ImageBackground
                             source={IMAGES.BUTTON}
-                            style={styles.registerButtonWrapper}
+                            style={[styles.forgotButtonWrapper, {
+                                width: BUTTON_WIDTH,
+                                height: BUTTON_HEIGHT
+                            }]}
                             resizeMode='stretch'
                         >
-                            <Text style={styles.registerText}>Send Login Link</Text>
+                            <Text style={[styles.forgotText, {
+                                marginBottom: BUTTON_HEIGHT / 5
+                            }]}>Send Login Link</Text>
                         </ImageBackground>
                     </TouchableOpacity>
                 </Animated.View>
