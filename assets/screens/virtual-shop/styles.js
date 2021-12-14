@@ -12,21 +12,19 @@ if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 
 
 export const styles = StyleSheet.create({
     headerContainer: {
-        width: '100%',
-        height: setHeight(11) + StatusBar.currentHeight / 2,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
         position: 'absolute',
         zIndex: 2,
-        backgroundColor: 'rgba(237, 175, 168, 1)'
+        backgroundColor: 'rgba(237, 175, 168, 1)',
+        width: '100%'
     },
     headerContent: {
         marginTop: Platform.OS == 'android' ? StatusBar.currentHeight / 2 : 15,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        width: setWidth(100)
+        flexDirection: 'row'
     },
     headerText: {
         fontFamily: FONTS.MeridiesAntiqua,
@@ -48,17 +46,8 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    item: {
-        width: setWidth(100),
-        height: setHeight(100),
-        zIndex: 9999
-    },
     itemImage: {
-        width: setWidth(60),
-        height: setHeight(25),
         position: 'absolute',
-        top: setHeight(42),
-        left: setWidth(50) - (setWidth(60) / 2)
     },
     popupMenu: {
         position: 'absolute',

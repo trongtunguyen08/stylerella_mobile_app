@@ -1,5 +1,17 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import { Animated, View, TouchableOpacity, Image, ScrollView, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+    Animated,
+    View,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Platform,
+    PixelRatio,
+    useWindowDimensions,
+    StatusBar
+} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Title, Text, Caption, TextInput, Paragraph } from 'react-native-paper'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
@@ -146,6 +158,20 @@ const ReviewRender = () => {
 }
 
 const ProductDetailsScreen = () => {
+    const { width, height } = useWindowDimensions()
+    let BODY_WIDTH = '100%'
+    let IMAGE_FRAME_SIZE = width * .6
+    let PRODUCT_IMAGE_WIDTH = width * .45
+    let PRODUCT_IMAGE_HEIGHT = width * .45
+    let ICON_SIZE = width * .11
+    if (width >= 700) {
+        BODY_WIDTH = '70%'
+        IMAGE_FRAME_SIZE = width * .4
+        PRODUCT_IMAGE_WIDTH = width * .3
+        PRODUCT_IMAGE_HEIGHT = width * .3
+        ICON_SIZE = width * .06
+    }
+
     const navigation = useNavigation()
 
     const [initialTabIndex, setInitialTabIndex] = useState(0)
@@ -190,11 +216,15 @@ const ProductDetailsScreen = () => {
         >
             {/* Header */}
             <View
-                style={styles.headerContainer}
+                style={[styles.headerContainer, {
+                    height: height * .11 + StatusBar.currentHeight / 2,
+                }]}
             >
                 <SafeAreaProvider>
                     <SafeAreaView>
-                        <View style={styles.headerContent}>
+                        <View style={[styles.headerContent, {
+                            width
+                        }]}>
                             <TouchableOpacity
                                 style={styles.headerBackIcon}
                                 onPress={onBackPress}
@@ -216,18 +246,26 @@ const ProductDetailsScreen = () => {
             </View>
             {/* Body */}
             <ScrollView
-                style={styles.bodyContainer}
+                style={[styles.bodyContainer, {
+                    width: BODY_WIDTH
+                }]}
                 showsVerticalScrollIndicator={false}
             >
                 <View>
                     <ImageBackground
                         source={IMAGES.FRAME}
-                        style={styles.imageFrame}
+                        style={[styles.imageFrame, {
+                            width: IMAGE_FRAME_SIZE,
+                            height: IMAGE_FRAME_SIZE
+                        }]}
                         resizeMode='stretch'
                     >
                         <Image
                             source={IMAGES.BAG_DETAILS}
-                            style={styles.productImage}
+                            style={{
+                                width: PRODUCT_IMAGE_WIDTH,
+                                height: PRODUCT_IMAGE_HEIGHT
+                            }}
                             resizeMode='stretch'
                         />
                     </ImageBackground>
@@ -238,20 +276,32 @@ const ProductDetailsScreen = () => {
                         }}
                     >
                         <TouchableOpacity
-                            style={styles.shareButton}
+                            style={{
+                                marginLeft: ICON_SIZE,
+                                marginTop: -ICON_SIZE / 2
+                            }}
                         >
                             <Image
                                 source={IMAGES.SHARE_BUTTON}
-                                style={styles.icon}
+                                style={{
+                                    width: ICON_SIZE,
+                                    height: ICON_SIZE
+                                }}
                                 resizeMode='stretch'
                             />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={styles.bookmarkButton}
+                            style={{
+                                marginRight: ICON_SIZE,
+                                marginTop: -ICON_SIZE / 2
+                            }}
                         >
                             <Image
                                 source={IMAGES.BOOKMARK}
-                                style={styles.icon}
+                                style={{
+                                    width: ICON_SIZE,
+                                    height: ICON_SIZE
+                                }}
                                 resizeMode='stretch'
                             />
                         </TouchableOpacity>

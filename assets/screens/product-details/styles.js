@@ -1,5 +1,5 @@
 import { StyleSheet, Platform, StatusBar, PixelRatio } from 'react-native'
-import { FONTS, COLORS, setHeight, setWidth } from '../../contants/contants'
+import { FONTS, COLORS } from '../../contants/contants'
 
 const ratio = PixelRatio.get()
 
@@ -11,11 +11,10 @@ if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: COLORS.white
     },
     headerContainer: {
-        width: '100%',
-        height: setHeight(11) + StatusBar.currentHeight / 2,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
@@ -25,8 +24,7 @@ export const styles = StyleSheet.create({
         marginTop: Platform.OS == 'android' ? StatusBar.currentHeight / 2 : 15,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
-        width: setWidth(100)
+        flexDirection: 'row'
     },
     headerText: {
         fontFamily: FONTS.MeridiesAntiqua,
@@ -45,35 +43,15 @@ export const styles = StyleSheet.create({
         tintColor: COLORS.white
     },
     bodyContainer: {
-        flex: 1,
-        height: '100%',
         backgroundColor: COLORS.white,
         paddingHorizontal: 20,
-        paddingTop: 10
+        paddingTop: 10,
+        alignSelf: 'center'
     },
     imageFrame: {
-        width: setWidth(60),
-        height: setWidth(60),
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    productImage: {
-        height: setWidth(35),
-        maxWidth: setWidth(50),
-        maxHeight: setWidth(50),
-    },
-    icon: {
-        width: setWidth(11),
-        height: setWidth(11)
-    },
-    shareButton: {
-        marginLeft: setWidth(11),
-        marginTop: -setWidth(11) / 1.5
-    },
-    bookmarkButton: {
-        marginRight: setWidth(11),
-        marginTop: -setWidth(11) / 1.5
     },
     productName: {
         alignSelf: 'center',

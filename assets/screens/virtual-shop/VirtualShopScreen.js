@@ -9,14 +9,16 @@ import {
     View,
     TouchableOpacity,
     Animated,
-    BackHandler
+    BackHandler,
+    useWindowDimensions,
+    StatusBar
 } from 'react-native'
 import { Title, Text } from 'react-native-paper'
 import * as Haptics from 'expo-haptics'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
-import { COLORS, IMAGES, setHeight, width } from '../../contants/contants'
+import { COLORS, IMAGES, setHeight } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
 
@@ -76,6 +78,25 @@ const FILTER_DATA = [
 let BACK_ICON_SIZE = 30
 
 const VirtualShopScreen = (props) => {
+    const { width, height } = useWindowDimensions()
+    let IMAGE_WIDTH = width * .6
+    let IMAGE_HEIGHT = height * .25
+    let IMAGE_TOP = height * .42
+    let IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
+    if (width >= 700) {
+        IMAGE_WIDTH = width * .5
+        IMAGE_HEIGHT = height * .3
+        IMAGE_TOP = height * .46
+        IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
+    }
+    if (width >= 1024) {
+        IMAGE_WIDTH = width * .5
+        IMAGE_HEIGHT = height * .5
+        IMAGE_TOP = height * .45
+        IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
+    }
+
+
     const { headerTitle } = props.route.params
     const navigation = useNavigation()
     const [loading, setLoading] = useState(true)
@@ -183,8 +204,11 @@ const VirtualShopScreen = (props) => {
     return (
         <ImageBackground
             source={IMAGES.VIRUAL_SHOPS_BG}
-            style={styles.container}
-            resizeMode='stretch'
+            style={{
+                width,
+                height
+            }}
+            resizeMode='cover'
             onLoadEnd={onLoadEnd}
         >
             {
@@ -202,11 +226,15 @@ const VirtualShopScreen = (props) => {
                     :
                     <>
                         <View
-                            style={styles.headerContainer}
+                            style={[styles.headerContainer, {
+                                height: height * .11 + StatusBar.currentHeight / 2,
+                            }]}
                         >
                             <SafeAreaProvider>
                                 <SafeAreaView>
-                                    <View style={styles.headerContent}>
+                                    <View style={[styles.headerContent, {
+                                        width
+                                    }]}>
                                         <Pressable
                                             hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
                                             style={styles.headerBackIcon}
@@ -246,7 +274,10 @@ const VirtualShopScreen = (props) => {
                                     >
                                         <TouchableOpacity
                                             activeOpacity={0.7}
-                                            style={styles.item}
+                                            style={{
+                                                width, height,
+                                                zIndex: 9999
+                                            }}
                                             onPress={() => navigation.navigate('ProductDetails')}
                                         >
                                             <Animated.Image
@@ -269,7 +300,11 @@ const VirtualShopScreen = (props) => {
                                                     opacity: scrollX.interpolate({
                                                         inputRange,
                                                         outputRange: [0, 1, 0]
-                                                    })
+                                                    }),
+                                                    width: IMAGE_WIDTH,
+                                                    height: IMAGE_HEIGHT,
+                                                    top: IMAGE_TOP,
+                                                    left: IMAGE_LEFT
                                                 }]}
                                                 resizeMode='stretch'
                                                 onLoadEnd={onImageItemEndLoad}
