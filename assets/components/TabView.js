@@ -16,7 +16,7 @@ import { Text } from 'react-native-paper'
 
 import { COLORS, FONTS, setHeight, setWidth } from '../contants/contants'
 import ShopList from './ShopList'
-import ProductList from './PruductList'
+import ProductList from './ProductList'
 import { t } from '../locales/index'
 const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
 import MenuOfZone from './MenuOfZone'

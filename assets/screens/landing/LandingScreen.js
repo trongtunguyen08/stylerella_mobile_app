@@ -16,12 +16,11 @@ import * as Haptics from 'expo-haptics'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
-import { Text } from 'react-native-paper'
 
 import { styles } from './styles'
 import { IMAGES, COLORS } from '../../contants/contants'
 import { t } from '../../locales/index'
-import ButtonText from '../../componets/ButtonText'
+import { ButtonText, LoadingModal } from '../../components'
 
 const LandingScreen = () => {
     const { width, height } = useWindowDimensions()
@@ -40,15 +39,17 @@ const LandingScreen = () => {
     if (width >= 700) {
         ICON = width * .12
         STYLERELLA_WIDTH = width * .2
-        FONT_SIZE = 20
         BUTTERFLY_ANIMATION_WIDTH = width * .06
+        LOGO_WIDTH = width * .7
+        LOGO_HEIGHT = height * .6
     }
 
     if (width >= 1024) {
         ICON = width * .08
         STYLERELLA_WIDTH = width * .1
-        FONT_SIZE = 20
         BUTTERFLY_ANIMATION_WIDTH = width * .04
+        LOGO_WIDTH = width * .5
+        LOGO_HEIGHT = height * .6
     }
 
     const navigation = useNavigation()
@@ -83,7 +84,7 @@ const LandingScreen = () => {
     let butterflyForRegisterAnimation = useRef(new Animated.Value(0)).current
     let outPut = [0, contentWidth - butterflyXForRes - (width - resButtonWidth) * 2]
     if (width >= 700) {
-        outPut = [0, contentWidth - butterflyXForRes - ((width - resButtonWidth) * 1.5)]
+        outPut = [0, contentWidth - butterflyXForRes - (width - resButtonWidth)]
     }
     const butterflyForResTranslateX = butterflyForRegisterAnimation.interpolate({
         inputRange: [0, 1],
@@ -134,7 +135,7 @@ const LandingScreen = () => {
     if (width >= 700) {
         outPutForLogin = [
             0,
-            contentWidth - butterflyXForLogin - ((width - resButtonWidth) * 1.5)
+            contentWidth - butterflyXForLogin - (width - resButtonWidth)
         ]
     }
     const butterflyForLoginTranslateX = butterflyForLoginAnimation.interpolate({
@@ -199,10 +200,7 @@ const LandingScreen = () => {
         contentWidth - butterflyXForGuest - (width - resButtonWidth) * 2
     ]
     if (width >= 700) {
-        outPutForGuest = [
-            0,
-            contentWidth - butterflyXForGuest - ((width - resButtonWidth) * 1.5)
-        ]
+        outPutForGuest = [0, contentWidth - butterflyXForGuest - (width - resButtonWidth)]
     }
     const butterflyForGuestTranslateX = butterflyForGuestAnimation.interpolate({
         inputRange: [0, 1],
@@ -258,6 +256,12 @@ const LandingScreen = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     }
 
+    //When logo end load
+    const [showLoadingModal, setShowLoadingModal] = useState(true)
+    const onLogoEndLoad = () => {
+        setShowLoadingModal(false)
+    }
+
     useEffect(() => {
         Animated.timing(
             buttonOpacity,
@@ -268,6 +272,7 @@ const LandingScreen = () => {
             }
         ).start()
     }, [])
+
     useEffect(() => {
         const backAction = () => {
             Alert.alert("Hold on!", "Are you sure you want to go exit app?", [
@@ -294,10 +299,11 @@ const LandingScreen = () => {
             <ImageBackground
                 style={styles.container}
                 source={IMAGES.LANDING_BACKGROUND}
-                resizeMode='cover'
             >
+                <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
+                {showLoadingModal && <LoadingModal />}
+
                 <SafeAreaView>
-                    <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
                     <View
                         onLayout={({ nativeEvent }) => {
                             var { width, height } = nativeEvent.layout
@@ -317,9 +323,11 @@ const LandingScreen = () => {
                                     }
                                 ],
                                 width: LOGO_WIDTH,
-                                height: LOGO_HEIGHT
+                                height: LOGO_HEIGHT,
+                                alignSelf: 'center'
                             }}
                             resizeMode='stretch'
+                            onLoadEnd={onLogoEndLoad}
                         />
 
                         {/* Logo */}

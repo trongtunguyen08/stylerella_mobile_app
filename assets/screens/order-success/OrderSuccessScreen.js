@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { IMAGES, COLORS, FONTS } from '../../contants/contants'
 import { ACTION_TYPES } from '../../redux/reducers/actionTypes'
-import ButtonText from '../../componets/ButtonText'
+import { ButtonText } from '../../components'
 
 const OrderSuccessScreen = () => {
     const navigation = useNavigation()
@@ -22,10 +22,13 @@ const OrderSuccessScreen = () => {
         return () => backHandler.remove()
     }, [])
 
-    const onDonePress = () => {
+    useEffect(() => {
         dispatch({
             type: ACTION_TYPES.DELETE_ITEMS_SELECTED
         })
+    }, [])
+
+    const onDonePress = () => {
         navigation.replace('Map')
     }
     return (

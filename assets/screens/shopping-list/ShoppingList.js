@@ -1,21 +1,29 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { Alert, StatusBar, FlatList, View, Platform, BackHandler, TouchableOpacity, Image, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native'
+import {
+    Alert,
+    FlatList,
+    View,
+    Platform,
+    BackHandler,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    TextInput,
+    KeyboardAvoidingView
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import * as Haptics from 'expo-haptics'
 import { Ionicons } from '@expo/vector-icons'
-import { Title, Text, Caption, Divider } from 'react-native-paper'
+import { Title, Text, Caption } from 'react-native-paper'
 import CheckBox from 'react-native-check-box'
 import { Rating } from 'react-native-elements'
 import LottieView from 'lottie-react-native'
 
 import { styles } from './styles'
-import { IMAGES, COLORS, setWidth } from '../../contants/contants'
+import { IMAGES, COLORS } from '../../contants/contants'
 import { ACTION_TYPES } from '../../redux/reducers/actionTypes'
-import Header from '../../componets/Header'
-import ButtonText from '../../componets/ButtonText'
-import FloatingMenu from '../../componets/FloatingMenu'
+import { Header, ButtonText, FloatingMenu } from '../../components'
 
 const ShoppingList = () => {
     const dispath = useDispatch()

@@ -17,6 +17,18 @@ const ButtonText = ({
     disabled
 }) => {
     const { width, height } = useWindowDimensions()
+    let BUTTON_HEIGHT = height * .052
+    let BUTTON_WIDTH = '75%'
+
+    if (width >= 700) {
+        BUTTON_HEIGHT = height * .04
+        BUTTON_WIDTH = '65%'
+    }
+
+    if (width >= 1024) {
+        BUTTON_HEIGHT = height * .05
+        BUTTON_WIDTH = '45%'
+    }
     return (
         <TouchableOpacity
             activeOpacity={0.6}
@@ -25,8 +37,8 @@ const ButtonText = ({
         >
             <View
                 style={{
-                    width: '75%',
-                    height: height * .052,
+                    width: BUTTON_WIDTH,
+                    height: BUTTON_HEIGHT,
                     padding: 1.5,
                     backgroundColor: COLORS.primary,
                     borderWidth: noBorder ? 0 : 1,

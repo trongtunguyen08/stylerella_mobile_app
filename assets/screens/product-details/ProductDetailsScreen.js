@@ -8,20 +8,19 @@ import {
     ImageBackground,
     KeyboardAvoidingView,
     Platform,
-    PixelRatio,
-    useWindowDimensions,
-    StatusBar
+    useWindowDimensions
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Title, Text, Caption, TextInput, Paragraph } from 'react-native-paper'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { Rating } from 'react-native-elements'
 
 import { styles } from './styles'
 import { COLORS, FONTS, IMAGES, setHeight, setWidth } from '../../contants/contants'
 import { useNavigation } from '@react-navigation/native'
-import FloatingMenu from '../../componets/FloatingMenu'
-import Header from '../../componets/Header'
+import {
+    FloatingMenu,
+    Header
+} from '../../components'
 
 const KeyboardAvoidingViewAnimated = Animated.createAnimatedComponent(KeyboardAvoidingView)
 

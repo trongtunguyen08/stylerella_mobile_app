@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { IMAGES, setHeight, setWidth, COLORS, width } from '../contants/contants'
 import { useNavigation } from '@react-navigation/native'
-import FloatingMenu from '../componets/FloatingMenu'
+import { FloatingMenu, LoadingModal } from '../components'
 
 const Data = [
     {
@@ -44,11 +44,9 @@ const ShopList = () => {
     let WIDTH = (width - 60) / 2
     let HEIGHT = height * .35
     const ratio = PixelRatio.get()
-
     if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
         HEIGHT = height * .39
     }
-
     if (width >= 700) {
         WIDTH = (width - 100) / 4
         HEIGHT = height * .3
@@ -59,6 +57,7 @@ const ShopList = () => {
     }
 
     const navigation = useNavigation()
+    const [loading, setLoading] = useState(true)
 
     const onBrandPress = (brandName) => {
         navigation.navigate('VirtualShop', { headerTitle: brandName })
@@ -68,8 +67,12 @@ const ShopList = () => {
             style={[styles.container]}
             source={IMAGES.SHOP_LIST_BG}
             blurRadius={3}
+            onLoadEnd={() => setLoading(false)}
         >
             <FloatingMenu />
+            {
+                loading && <LoadingModal />
+            }
             <FlatList
                 data={Data}
                 keyExtractor={item => item.index.toString()}

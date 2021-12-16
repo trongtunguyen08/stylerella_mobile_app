@@ -10,8 +10,7 @@ import { Text, Title } from 'react-native-paper'
 
 import { t } from '../locales/index'
 import { FONTS, COLORS } from '../contants/contants'
-import { TouchableOpacity } from 'react-native'
-import ButtonText from '../componets/ButtonText'
+import ButtonText from '../components/ButtonText'
 
 const MembershipBonus = (props) => {
     let RIGHT = 5

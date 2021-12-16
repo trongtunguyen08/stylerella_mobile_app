@@ -3,9 +3,7 @@ import {
     StatusBar,
     ImageBackground,
     View,
-    ActivityIndicator,
     Animated,
-    Pressable,
     TouchableOpacity,
     Alert,
     BackHandler,
@@ -13,25 +11,28 @@ import {
     Platform,
     PixelRatio
 } from 'react-native'
-import { Text } from 'react-native-paper'
 import * as Haptics from 'expo-haptics'
+import { useNavigation } from '@react-navigation/native'
 
 import { styles } from './styles'
-import { IMAGES, COLORS } from '../../contants/contants'
+import { IMAGES } from '../../contants/contants'
 import { t } from '../../locales/index'
-import { useNavigation } from '@react-navigation/native'
 import { getRandomNumber } from '../../contants/getRandomNumber'
-import ButtonText from '../../componets/ButtonText'
-import WaterRipple from '../../componets/WaterRipple'
-import FallLeaf from '../../componets/FallLeaf'
-import Birds from '../../componets/Birds'
-import SnowAnimated from '../../componets/SnowAnimated'
-import Rain from '../../componets/Rain'
-import Glow from '../../componets/Glow'
-import Sun from '../../componets/Sun'
-import PopupMenu from '../../componets/PopupMenu'
-import FallingSnow from '../../componets/FallingSnow'
-import FloatingMenu from '../../componets/FloatingMenu'
+import {
+    ButtonText,
+    WaterRipple,
+    FallLeaf,
+    Birds,
+    SnowAnimated,
+    Rain,
+    Glow,
+    Sun,
+    PopupMenu,
+    FallingSnow,
+    FloatingMenu,
+    LoadingModal
+} from '../../components'
+
 
 
 const BackgroundAnimated = Animated.createAnimatedComponent(ImageBackground)
@@ -620,7 +621,7 @@ const MapScreen = () => {
                 </BackgroundAnimated>
             </Animated.ScrollView>
             {
-                isLoading && <ActivityIndicator style={styles.indicator} size='large' color={COLORS.primary} />
+                isLoading && <LoadingModal />
             }
 
             {/*  Popup Menu */}

@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { StatusBar, TouchableOpacity, View, Image, ScrollView, TextInput } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { useSelector, useDispatch } from 'react-redux'
-import { Ionicons } from '@expo/vector-icons'
+import { View, Image, ScrollView, TextInput } from 'react-native'
+import { useSelector } from 'react-redux'
 import { Title, Text, Subheading } from 'react-native-paper'
 import CheckBox from 'react-native-check-box'
 import { useNavigation } from '@react-navigation/native'
 
 import { styles } from './styles'
-import { COLORS, IMAGES, setWidth, setHeight, FONTS } from '../../contants/contants'
-import ButtonText from '../../componets/ButtonText'
-import FloatingMenu from '../../componets/FloatingMenu'
-import Header from '../../componets/Header'
+import { COLORS } from '../../contants/contants'
+import {
+    ButtonText,
+    FloatingMenu,
+    Header
+} from '../../components'
 
 const PaymentDetailsScreen = () => {
     const navigation = useNavigation()

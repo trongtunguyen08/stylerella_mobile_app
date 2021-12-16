@@ -17,9 +17,12 @@ import LottieView from 'lottie-react-native'
 import { COLORS, IMAGES } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
-import InputCustom from '../../componets/InputCustom'
-import Header from '../../componets/Header'
-import ButtonText from '../../componets/ButtonText'
+import {
+    InputCustom,
+    Header,
+    ButtonText,
+    LoadingModal
+} from '../../components'
 
 
 const LoginScreen = () => {
@@ -88,15 +91,7 @@ const LoginScreen = () => {
             {/* Loading */}
             {
                 loading &&
-                <LottieView
-                    source={IMAGES.LOADING}
-                    autoPlay
-                    loop
-                    style={{
-                        position: 'absolute',
-                        zIndex: 999
-                    }}
-                />
+                <LoadingModal />
             }
             {/* Header */}
             <Header

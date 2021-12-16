@@ -1,31 +1,30 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import {
     Animated,
     View,
     ImageBackground,
-    BackHandler,
-    PixelRatio,
-    Platform,
-    useWindowDimensions
+    BackHandler
 } from 'react-native'
 import { Caption } from 'react-native-paper'
 
 import { IMAGES } from '../../contants/contants'
 import { styles } from './styles'
-import InputCustom from '../../componets/InputCustom'
-import Header from '../../componets/Header'
-import ButtonText from '../../componets/ButtonText'
+import {
+    InputCustom,
+    Header,
+    ButtonText,
+    LoadingModal
+} from '../../components'
 
 const ForgotPasswordScreen = () => {
-    const { width } = useWindowDimensions()
-
     const navigation = useNavigation()
     const animatedValue = useRef(new Animated.Value(0)).current
     const translateY = animatedValue.interpolate({
         inputRange: [0, 1],
         outputRange: [20, 0]
     })
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         Animated.timing(
@@ -52,6 +51,8 @@ const ForgotPasswordScreen = () => {
     }, [])
     return (
         <View style={styles.container}>
+            {/* Loading */}
+            {loading && <LoadingModal />}
             {/* Header */}
             <Header
                 headerTitle='Cannot Login?'
@@ -64,6 +65,7 @@ const ForgotPasswordScreen = () => {
                     flex: 1,
                     padding: 20
                 }}
+                onLoadEnd={() => setLoading(false)}
             >
                 <Animated.View
                     style={[styles.titleWrapper, {

@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { COLORS, FONTS, IMAGES, setHeight } from '../contants/contants'
 import { ACTION_TYPES } from '../redux/reducers/actionTypes'
-import FloatingMenu from '../componets/FloatingMenu'
+import FloatingMenu from './FloatingMenu'
+import LoadingModal from './LoadingModal'
 
 const DATA = [
     {
@@ -85,15 +86,12 @@ const ProductList = () => {
     let MARGIN_HO = 5
     let IMAGE_HEIGHT = height * .18
     const ratio = PixelRatio.get()
-
     if (Platform.OS == 'ios' && ratio < 3 && width < 400) {
         PADDING_VER = 7
     }
-
     if (Platform.OS == 'android') {
         PADDING_VER = 7
     }
-
     if (width >= 700) {
         WIDTH = (width - 50) / 4
     }
@@ -102,6 +100,7 @@ const ProductList = () => {
         IMAGE_HEIGHT = height * .25
     }
     //
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const selectedProduct = (item) => dispatch({
         type: ACTION_TYPES.ADD_TO_SHOPPING_LIST,
@@ -181,8 +180,12 @@ const ProductList = () => {
                 source={IMAGES.SHOP_LIST_BG}
                 style={styles.container}
                 blurRadius={5}
+                onLoadEnd={() => setLoading(false)}
             >
                 <FloatingMenu />
+                {
+                    loading && <LoadingModal />
+                }
                 <FlatList
                     data={DATA}
                     keyExtractor={item => item.id.toString()}

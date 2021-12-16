@@ -14,7 +14,7 @@ import { Title, Headline } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 
 import { COLORS, IMAGES, FONTS } from '../../contants/contants'
-import ButtonText from '../../componets/ButtonText'
+import { ButtonText } from '../../components'
 
 const SuccessScreen = ({ navigation }) => {
     const { width, height } = useWindowDimensions()

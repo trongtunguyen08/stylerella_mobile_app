@@ -21,8 +21,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, IMAGES, setHeight } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
-import Header from '../../componets/Header'
-import FloatingMenu from '../../componets/FloatingMenu'
+import { Header, FloatingMenu, LoadingModal } from '../../components'
 
 const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
 
@@ -222,15 +221,7 @@ const VirtualShopScreen = (props) => {
                 {
                     loading
                         ?
-                        <View style={{
-                            flex: 1,
-                            backgroundColor: 'white',
-                            justifyContent: 'center'
-                        }}>
-                            <ActivityIndicator
-                                color={COLORS.primary}
-                            />
-                        </View>
+                        <LoadingModal />
                         :
                         <>
                             {/* List Products */}

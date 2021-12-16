@@ -17,13 +17,16 @@ import LottieView from 'lottie-react-native'
 import { IMAGES, COLORS, FONTS } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
-import InputCustom from '../../componets/InputCustom'
-import Header from '../../componets/Header'
-import ButtonText from '../../componets/ButtonText'
+import {
+    InputCustom,
+    Header,
+    ButtonText,
+    LoadingModal
+} from '../../components'
 
 const RegisterScreen = () => {
     const navigation = useNavigation()
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [floatingButterfyShow, setFloatingButterfyShow] = useState(false)
 
     const onBackPress = () => {
@@ -58,6 +61,7 @@ const RegisterScreen = () => {
             }
         ).start()
     }, [])
+
     useEffect(() => {
         const backAction = () => {
             navigation.goBack()
@@ -79,15 +83,7 @@ const RegisterScreen = () => {
             {/* Loading */}
             {
                 loading &&
-                <LottieView
-                    source={IMAGES.LOADING}
-                    autoPlay
-                    loop
-                    style={{
-                        position: 'absolute',
-                        zIndex: 999
-                    }}
-                />
+                <LoadingModal />
             }
             {/* Header */}
             <Header
@@ -99,6 +95,7 @@ const RegisterScreen = () => {
                 source={IMAGES.LOGIN_REGISTER_BG}
                 style={styles.content}
                 resizeMode='stretch'
+                onLoadEnd={() => setLoading(false)}
             >
                 <ScrollView
                     showsVerticalScrollIndicator={false}
