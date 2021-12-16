@@ -9,8 +9,8 @@ import {
     Easing,
     BackHandler,
     useWindowDimensions,
-    Platform,
-    PixelRatio
+    PixelRatio,
+    Platform
 } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
@@ -19,24 +19,25 @@ import LottieView from 'lottie-react-native'
 import { Text } from 'react-native-paper'
 
 import { styles } from './styles'
-import { IMAGES } from '../../contants/contants'
+import { IMAGES, COLORS } from '../../contants/contants'
 import { t } from '../../locales/index'
+import ButtonText from '../../componets/ButtonText'
 
 const LandingScreen = () => {
     const { width, height } = useWindowDimensions()
-    let BUTTON_WIDTH = width * .65
-    let BUTTON_HEIGHT = width * .18
     let ICON = width * .2
-    let LOGO_WIDTH = width * .82
-    let LOGO_HEIGHT = height * .47
-    let STYLERELLA_WIDTH = width * .3
+    let LOGO_WIDTH = width * .9
+    let LOGO_HEIGHT = height * .54
+    let STYLERELLA_WIDTH = width * .45
     let BUTTERFLY_ANIMATION_WIDTH = width * .12
 
     const ratio = PixelRatio.get()
 
+    if (Platform.OS === 'ios' && ratio <= 2) {
+        LOGO_WIDTH = width * .8
+    }
+
     if (width >= 700) {
-        BUTTON_WIDTH = width * .45
-        BUTTON_HEIGHT = width * .1
         ICON = width * .12
         STYLERELLA_WIDTH = width * .2
         FONT_SIZE = 20
@@ -44,8 +45,6 @@ const LandingScreen = () => {
     }
 
     if (width >= 1024) {
-        BUTTON_WIDTH = width * .35
-        BUTTON_HEIGHT = width * .06
         ICON = width * .08
         STYLERELLA_WIDTH = width * .1
         FONT_SIZE = 20
@@ -82,7 +81,7 @@ const LandingScreen = () => {
     const [butterflyXForRes, setButterflyXForRes] = useState(0)
     const [butterflyYForRes, setButterflyYForRes] = useState(0)
     let butterflyForRegisterAnimation = useRef(new Animated.Value(0)).current
-    let outPut = [0, contentWidth - butterflyXForRes - (width - resButtonWidth)]
+    let outPut = [0, contentWidth - butterflyXForRes - (width - resButtonWidth) * 2]
     if (width >= 700) {
         outPut = [0, contentWidth - butterflyXForRes - ((width - resButtonWidth) * 1.5)]
     }
@@ -92,19 +91,11 @@ const LandingScreen = () => {
     })
     const butterflyForResTranslateY = butterflyForRegisterAnimation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, resButtonY - butterflyYForRes + butterflyHeight / 7]
+        outputRange: [0, resButtonY - butterflyYForRes]
     })
     const butterflyRotateForRegister = butterflyForRegisterAnimation.interpolate({
-        inputRange: [
-            0,
-            0.8,
-            1
-        ],
-        outputRange: [
-            '-20deg',
-            '-86deg',
-            '-20deg'
-        ]
+        inputRange: [0, 0.8, 1],
+        outputRange: ['-20deg', '-86deg', '-20deg']
     })
     const onRegisterPressed = async () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -138,7 +129,7 @@ const LandingScreen = () => {
     let butterflyForLoginAnimation = useRef(new Animated.Value(0)).current
     let outPutForLogin = [
         0,
-        contentWidth - butterflyXForLogin - (width - resButtonWidth)
+        contentWidth - butterflyXForLogin - (width - resButtonWidth) * 2
     ]
     if (width >= 700) {
         outPutForLogin = [
@@ -203,13 +194,9 @@ const LandingScreen = () => {
     const [butterflyYForGuest, setButterflyYForGuest] = useState(0)
     const [guestButtonY, setGuestButtonY] = useState(0)
     let butterflyForGuestAnimation = useRef(new Animated.Value(0)).current
-    let input = [
-        0,
-        1,
-    ]
     let outPutForGuest = [
         0,
-        contentWidth - butterflyXForGuest - (width - resButtonWidth)
+        contentWidth - butterflyXForGuest - (width - resButtonWidth) * 2
     ]
     if (width >= 700) {
         outPutForGuest = [
@@ -218,7 +205,7 @@ const LandingScreen = () => {
         ]
     }
     const butterflyForGuestTranslateX = butterflyForGuestAnimation.interpolate({
-        inputRange: input,
+        inputRange: [0, 1],
         outputRange: outPutForGuest
     })
     const butterflyForGuestTranslateY = butterflyForGuestAnimation.interpolate({
@@ -229,20 +216,8 @@ const LandingScreen = () => {
         ]
     })
     const butterflyRotateForGuest = butterflyForGuestAnimation.interpolate({
-        inputRange: [
-            0,
-            0.25,
-            0.5,
-            0.75,
-            1
-        ],
-        outputRange: [
-            '0deg',
-            '-10deg',
-            '-50deg',
-            '-60deg',
-            '-20deg',
-        ]
+        inputRange: [0, 0.25, 0.5, 0.75, 1],
+        outputRange: ['0deg', '-10deg', '-50deg', '-60deg', '-20deg']
     })
     const onLoginAsGuestPressed = async () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
@@ -322,7 +297,7 @@ const LandingScreen = () => {
                 resizeMode='cover'
             >
                 <SafeAreaView>
-                    <StatusBar barStyle='light-content' translucent backgroundColor='transparent' />
+                    <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
                     <View
                         onLayout={({ nativeEvent }) => {
                             var { width, height } = nativeEvent.layout
@@ -344,7 +319,7 @@ const LandingScreen = () => {
                                 width: LOGO_WIDTH,
                                 height: LOGO_HEIGHT
                             }}
-                            resizeMode='contain'
+                            resizeMode='stretch'
                         />
 
                         {/* Logo */}
@@ -358,9 +333,10 @@ const LandingScreen = () => {
                                     }
                                 ],
                                 width: STYLERELLA_WIDTH,
-                                height: STYLERELLA_WIDTH
+                                height: height * .1,
+                                marginBottom: 10
                             }]}
-                            resizeMode='contain'
+                            resizeMode='stretch'
                         />
 
                         {/* Butterfly animation for Register button */}
@@ -481,25 +457,13 @@ const LandingScreen = () => {
                                 setResButtonHeight(height)
                             }}
                         >
-                            <TouchableOpacity
-                                activeOpacity={0.6}
+                            <ButtonText
+                                text={t('register')}
                                 onPress={onRegisterPressed}
-                            >
-                                <ImageBackground
-                                    source={IMAGES.BUTTON}
-                                    style={[styles.button, {
-                                        marginBottom: -15,
-                                        width: BUTTON_WIDTH,
-                                        height: BUTTON_HEIGHT,
-                                    }]}
-                                    resizeMode='stretch'
-                                >
-                                    <Text style={[styles.buttonText, {
-                                        marginBottom: BUTTON_HEIGHT / 5
-                                    }]}>{t('register')}</Text>
-
-                                </ImageBackground>
-                            </TouchableOpacity>
+                                containerStyle={{
+                                    marginBottom: 10
+                                }}
+                            />
                         </Animated.View>
 
                         {/* Login Button */}
@@ -517,25 +481,13 @@ const LandingScreen = () => {
                                 ]
                             }}
                         >
-                            <TouchableOpacity
-                                activeOpacity={0.6}
+                            <ButtonText
+                                text={t('login')}
                                 onPress={onLoginPressed}
-                            >
-                                <ImageBackground
-                                    source={IMAGES.BUTTON}
-                                    style={[styles.button, {
-                                        marginBottom: -15,
-                                        width: BUTTON_WIDTH,
-                                        height: BUTTON_HEIGHT
-                                    }]}
-                                    resizeMode='stretch'
-                                >
-                                    <Text style={[styles.buttonText, {
-                                        marginBottom: BUTTON_HEIGHT / 5
-                                    }]}>{t('login')}</Text>
-
-                                </ImageBackground>
-                            </TouchableOpacity>
+                                containerStyle={{
+                                    marginBottom: 10
+                                }}
+                            />
                         </Animated.View>
 
                         {/* Continue as Guest Button */}
@@ -553,31 +505,19 @@ const LandingScreen = () => {
                                 ]
                             }}
                         >
-                            <TouchableOpacity
-                                activeOpacity={0.6}
+                            <ButtonText
+                                text={t('guest')}
                                 onPress={onLoginAsGuestPressed}
-                            >
-                                <ImageBackground
-                                    source={IMAGES.BUTTON}
-                                    style={[styles.button, {
-                                        marginBottom: -15,
-                                        width: BUTTON_WIDTH,
-                                        height: BUTTON_HEIGHT,
-                                    }]}
-                                    resizeMode='stretch'
-                                >
-                                    <Text style={[styles.buttonText, {
-                                        marginBottom: BUTTON_HEIGHT / 5
-                                    }]}>{t('guest')}</Text>
-
-                                </ImageBackground>
-                            </TouchableOpacity>
+                                containerStyle={{
+                                    marginBottom: 10
+                                }}
+                            />
                         </Animated.View>
 
                         {/* Login by social */}
                         <View
                             style={[styles.socialLoginWrapper, {
-                                width: BUTTON_WIDTH,
+                                width: '75%',
                                 justifyContent: width >= 700 ? 'space-evenly' : 'space-between',
                             }]}
                         >
@@ -605,14 +545,16 @@ const LandingScreen = () => {
                             >
                                 <Animated.Image
                                     source={IMAGES.FACEBOOK}
-                                    style={[styles.socilaIcon, {
+                                    style={{
                                         opacity: buttonOpacity,
                                         transform: [
                                             {
                                                 translateY: socialButtonTranslateY
                                             }
-                                        ]
-                                    }]}
+                                        ],
+                                        width: ICON,
+                                        height: ICON
+                                    }}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -621,21 +563,23 @@ const LandingScreen = () => {
                             >
                                 <Animated.Image
                                     source={IMAGES.WECHAT}
-                                    style={[styles.socilaIcon, {
+                                    style={{
                                         opacity: buttonOpacity,
                                         transform: [
                                             {
                                                 translateY: socialButtonTranslateY
                                             }
-                                        ]
-                                    }]}
+                                        ],
+                                        width: ICON,
+                                        height: ICON
+                                    }}
                                 />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </SafeAreaView>
             </ImageBackground>
-        </SafeAreaProvider>
+        </SafeAreaProvider >
     )
 }
 

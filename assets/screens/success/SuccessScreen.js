@@ -14,22 +14,18 @@ import { Title, Headline } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 
 import { COLORS, IMAGES, FONTS } from '../../contants/contants'
+import ButtonText from '../../componets/ButtonText'
 
 const SuccessScreen = ({ navigation }) => {
     const { width, height } = useWindowDimensions()
     let LOGO_SIZE = width * .4
-    let BUTTON_WIDTH = width * .65
-    let BUTTON_HEIGHT = width * .18
     if (width >= 700) {
         LOGO_SIZE = width * .25
-        BUTTON_WIDTH = width * .45
-        BUTTON_HEIGHT = width * .1
     }
     if (width >= 1024) {
         LOGO_SIZE = width * .15
-        BUTTON_WIDTH = width * .4
-        BUTTON_HEIGHT = width * .07
     }
+
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             "hardwareBackPress",
@@ -67,22 +63,11 @@ const SuccessScreen = ({ navigation }) => {
                     <Headline style={styles.text}>Successfully Verified</Headline>
                     <Text style={styles.text}>Please enjoy your shop</Text>
                 </View>
-                <TouchableOpacity
+
+                <ButtonText
+                    text='Done'
                     onPress={() => navigation.replace('Map')}
-                >
-                    <ImageBackground
-                        source={IMAGES.BUTTON}
-                        style={[styles.buttonWrapper, {
-                            width: BUTTON_WIDTH,
-                            height: BUTTON_HEIGHT,
-                        }]}
-                        resizeMode='stretch'
-                    >
-                        <Text style={[styles.buttonText, {
-                            marginBottom: BUTTON_HEIGHT / 5
-                        }]}>Done</Text>
-                    </ImageBackground>
-                </TouchableOpacity>
+                />
             </View>
         </View>
     )

@@ -13,6 +13,9 @@ import LottieView from 'lottie-react-native'
 import { styles } from './styles'
 import { IMAGES, COLORS, setWidth } from '../../contants/contants'
 import { ACTION_TYPES } from '../../redux/reducers/actionTypes'
+import Header from '../../componets/Header'
+import ButtonText from '../../componets/ButtonText'
+import FloatingMenu from '../../componets/FloatingMenu'
 
 const ShoppingList = () => {
     const dispath = useDispatch()
@@ -136,32 +139,15 @@ const ShoppingList = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
         >
-            <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
+            {/* Floating Menu */}
+            <FloatingMenu />
+
             {/* Header */}
-            <View
-                style={styles.headerContainer}
-            >
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <View style={styles.headerContent}>
-                            <Image
-                                source={IMAGES.STYLERELLA2}
-                                style={styles.headerLeftIamge}
-                            />
-                            <Title style={styles.headerTitleText}>Shopping Cart</Title>
-                            <TouchableOpacity
-                                style={styles.headerBackIcon}
-                            >
-                                <Ionicons
-                                    name='search-outline'
-                                    color={COLORS.white}
-                                    size={setWidth(6)}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
+            <Header
+                headerTitle='Shopping Cart'
+                rightIcon={'search-outline'}
+                onPressRightIcon={() => { }}
+            />
 
             {/* Nav bar */}
             <View style={styles.navBarContainer}>
@@ -313,18 +299,16 @@ const ShoppingList = () => {
                                                         </View>
                                                     </View>
                                                 </View>
-                                                <TouchableOpacity
-                                                    style={[styles.checkoutWrapper, {
-                                                        backgroundColor: checkOrderTotal() > 0 ? COLORS.primary : '#EEE'
-                                                    }]}
+                                                <ButtonText
+                                                    text='CHECKOUT'
                                                     disabled={checkOrderTotal() > 0 ? false : true}
                                                     onPress={() => navigation.navigate('PaymentDetails')}
-
-                                                >
-                                                    <Text style={[styles.checkoutText, {
-                                                        color: checkOrderTotal() > 0 ? COLORS.white : COLORS.gray
-                                                    }]}>CHECKOUT</Text>
-                                                </TouchableOpacity>
+                                                    containerStyle={{
+                                                        backgroundColor: checkOrderTotal() > 0 ? COLORS.primary : COLORS.gray,
+                                                        marginTop: 15,
+                                                        marginBottom: 30
+                                                    }}
+                                                />
                                             </View>
                                             : null
                                     }

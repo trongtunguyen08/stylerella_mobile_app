@@ -2,48 +2,29 @@ import React, { useRef, useEffect, useState } from 'react'
 import {
     Animated,
     Platform,
-    View,
-    StatusBar,
-    TouchableOpacity,
-    Image,
     ScrollView,
     ImageBackground,
     KeyboardAvoidingView,
     BackHandler,
-    PixelRatio,
-    useWindowDimensions
+    Image,
+    TextInput,
+    View
 } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Caption, Text, Title } from 'react-native-paper'
+import { Caption, Title, Text } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 
-import { COLORS, IMAGES } from '../../contants/contants'
+import { IMAGES, COLORS, FONTS } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
 import InputCustom from '../../componets/InputCustom'
+import Header from '../../componets/Header'
+import ButtonText from '../../componets/ButtonText'
 
 const RegisterScreen = () => {
-    const { width, height } = useWindowDimensions()
-    const ratio = PixelRatio.get()
-    let LOGO_SIZE = 35
-    let BUTTON_WIDTH = width * .65
-    let BUTTON_HEIGHT = width * .18
-    if (width >= 700) {
-        BUTTON_WIDTH = width * .45
-        BUTTON_HEIGHT = width * .1
-    }
-    if (width >= 1024) {
-        BUTTON_WIDTH = width * .4
-        BUTTON_HEIGHT = width * .07
-    }
-    if ((Platform.OS == 'ios' && ratio < 3) || (Platform.OS == 'android' && ratio < 2.5)) {
-        LOGO_SIZE = 30
-    }
-
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
+    const [floatingButterfyShow, setFloatingButterfyShow] = useState(false)
 
     const onBackPress = () => {
         navigation.goBack()
@@ -51,6 +32,7 @@ const RegisterScreen = () => {
 
     const onRegisterPress = () => {
         setLoading(true)
+        setFloatingButterfyShow(true)
         setTimeout(() => {
             navigation.replace('Success')
         }, 2000)
@@ -60,6 +42,10 @@ const RegisterScreen = () => {
     const translateY = animatedValue.interpolate({
         inputRange: [0, 1],
         outputRange: [20, 0]
+    })
+    const contentTranslateY = animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-20, 0]
     })
 
     useEffect(() => {
@@ -90,8 +76,7 @@ const RegisterScreen = () => {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <StatusBar barStyle='light-content' translucent backgroundColor={COLORS.primary} />
-            {/* Lading */}
+            {/* Loading */}
             {
                 loading &&
                 <LottieView
@@ -105,131 +90,144 @@ const RegisterScreen = () => {
                 />
             }
             {/* Header */}
-            <View
-                style={[styles.headerContainer, {
-                    height: (height * .11) + (StatusBar.currentHeight / 2),
-                    width: width
-                }]}
+            <Header
+                headerTitle={t('register')}
+                showCloseIcon={true}
+                onClosePress={onBackPress}
+            />
+            <ImageBackground
+                source={IMAGES.LOGIN_REGISTER_BG}
+                style={styles.content}
+                resizeMode='stretch'
             >
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <View style={[styles.headerContent, {
-                            width: width
-                        }]}>
-                            <TouchableOpacity
-                                style={styles.headerBackIcon}
-                                onPress={onBackPress}
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        padding: 20
+                    }}
+                >
+                    <Animated.View
+                        style={[styles.titleWrapper, {
+                            transform: [
+                                {
+                                    translateY
+                                }
+                            ]
+                        }]}
+                    >
+                        <Title style={styles.titleText}>CREATE AN ACCOUNT</Title>
+                        <Caption style={styles.subTitleText}>{`After create an account,\n you can browse and buy more brands`}</Caption>
+                    </Animated.View>
+                    <Animated.View
+                        style={{
+                            transform: [
+                                {
+                                    translateY: contentTranslateY
+                                }
+                            ]
+                        }}
+                    >
+                        <InputCustom
+                            label='First Name'
+                            autoCapitalize='words'
+                        />
+                        <InputCustom
+                            label='Last Name'
+                            autoCapitalize='words'
+                        />
+                        <InputCustom
+                            label='Email Address'
+                            keyboardType='email-address'
+                            autoCapitalize='none'
+                        />
+                        <InputCustom
+                            label='Mobile Number'
+                            keyboardType='phone-pad'
+                            returnKeyType='done'
+                        />
+                        <InputCustom
+                            label='Password'
+                            isPassword={true}
+                        />
+                        <InputCustom
+                            label='Confirm Password'
+                            isPassword={true}
+                        />
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginVertical: 5
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: FONTS.MeridiesAntiqua,
+                                    color: COLORS.white
+                                }}
                             >
-                                <Ionicons
-                                    name='arrow-back-outline'
-                                    color={COLORS.white}
-                                    size={30}
-                                />
-                            </TouchableOpacity>
-                            <Title style={styles.headerText}>{t('register')}</Title>
-                            <Image
-                                source={IMAGES.STYLERELLA2}
-                                style={[styles.headerRightIamge, {
-                                    width: LOGO_SIZE,
-                                    height: LOGO_SIZE
-                                }]}
+                                Referral Code
+                            </Text>
+                            <TextInput
+                                style={{
+                                    fontFamily: FONTS.MeridiesAntiqua,
+                                    color: COLORS.white,
+                                    flex: 1,
+                                    marginLeft: 20,
+                                    borderWidth: 0.5,
+                                    borderRadius: 10,
+                                    padding: 10,
+                                    borderColor: COLORS.white
+                                }}
+                                autoCorrect={false}
+                                autoCapitalize='none'
+                                autoComplete='off'
                             />
                         </View>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
-            <ScrollView style={styles.content}>
+                    </Animated.View>
 
-                <Animated.View
-                    style={[styles.titleWrapper, {
+                    <Animated.View style={{
                         transform: [
                             {
                                 translateY
                             }
                         ]
-                    }]}
-                >
-                    <Title style={styles.titleText}>CREATE AN ACCOUNT</Title>
-                    <Caption style={styles.subTitleText}>{`After create an account,\n you can browse and buy more brands`}</Caption>
-                </Animated.View>
-
-                <InputCustom
-                    leftIconName='people-outline'
-                    placeholder='First Name'
-                    autoCapitalize='words'
-                />
-                <InputCustom
-                    leftIconName='people-outline'
-                    placeholder='Last Name'
-                    autoCapitalize='words'
-                />
-                <InputCustom
-                    leftIconName='mail-open-outline'
-                    placeholder='Email Address'
-                    keyboardType='email-address'
-                    autoCapitalize='none'
-                />
-                <InputCustom
-                    leftIconName='call-outline'
-                    placeholder='Mobile Number'
-                    keyboardType='phone-pad'
-                    returnKeyType='done'
-                />
-                <InputCustom
-                    leftIconName='lock-closed-outline'
-                    placeholder='Password'
-                    isPassword={true}
-                />
-                <InputCustom
-                    leftIconName='lock-closed-outline'
-                    placeholder='Confirm Password'
-                    isPassword={true}
-                />
-                <InputCustom
-                    leftIconName='cash-outline'
-                    placeholder='Referral Code'
-                />
-                <Animated.View style={{
-                    transform: [
+                    }}>
                         {
-                            translateY
+                            floatingButterfyShow &&
+                            <Image
+                                source={IMAGES.BUTTERFLY}
+                                style={styles.floatingButterfly}
+                            />
                         }
-                    ]
-                }}>
-                    <TouchableOpacity
-                        onPress={onRegisterPress}
+
+                        <ButtonText
+                            text={t('register')}
+                            containerStyle={{
+                                marginVertical: 10
+                            }}
+                            onPress={onRegisterPress}
+                        />
+                    </Animated.View>
+
+                    <Animated.View
+                        style={{
+                            transform: [
+                                {
+                                    translateY
+                                }
+                            ]
+                        }}
                     >
-                        <ImageBackground
-                            source={IMAGES.BUTTON}
-                            style={[styles.registerButtonWrapper, {
-                                width: BUTTON_WIDTH,
-                                height: BUTTON_HEIGHT
-                            }]}
-                            resizeMode='stretch'
-                        >
-                            <Text style={[styles.registerText, {
-                                marginBottom: BUTTON_HEIGHT / 5
-                            }]}>Register</Text>
-                        </ImageBackground>
-                    </TouchableOpacity>
-                </Animated.View>
-                <Animated.View
-                    style={[styles.footerLoginWrapper, {
-                        transform: [
-                            {
-                                translateY
-                            }
-                        ]
-                    }]}
-                >
-                    <Text style={styles.alreadyHaveAccountText}>Already have an account?</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Login')}
-                    >
-                        <Text style={styles.loginText}>Login</Text>
-                    </TouchableOpacity>
-                </Animated.View>
-            </ScrollView>
+                        <ButtonText
+                            text='Already have an Account'
+                            onPress={() => {
+                                navigation.navigate('Login')
+                            }}
+                        />
+                    </Animated.View>
+                </ScrollView>
+            </ImageBackground>
         </KeyboardAvoidingView>
     )
 }

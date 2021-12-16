@@ -20,8 +20,10 @@ import { Rating } from 'react-native-elements'
 import { styles } from './styles'
 import { COLORS, FONTS, IMAGES, setHeight, setWidth } from '../../contants/contants'
 import { useNavigation } from '@react-navigation/native'
-const KeyboardAvoidingViewAnimated = Animated.createAnimatedComponent(KeyboardAvoidingView)
+import FloatingMenu from '../../componets/FloatingMenu'
+import Header from '../../componets/Header'
 
+const KeyboardAvoidingViewAnimated = Animated.createAnimatedComponent(KeyboardAvoidingView)
 
 const SpecificationRender = () => {
     const [textShown, setTextShown] = useState(false); //To show ur remaining Text
@@ -214,36 +216,16 @@ const ProductDetailsScreen = () => {
             }]}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
+            {/* Floating Menu */}
+            <FloatingMenu />
+
             {/* Header */}
-            <View
-                style={[styles.headerContainer, {
-                    height: height * .11 + StatusBar.currentHeight / 2,
-                }]}
-            >
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <View style={[styles.headerContent, {
-                            width
-                        }]}>
-                            <TouchableOpacity
-                                style={styles.headerBackIcon}
-                                onPress={onBackPress}
-                            >
-                                <Ionicons
-                                    name='arrow-back-outline'
-                                    color={COLORS.white}
-                                    size={24}
-                                />
-                            </TouchableOpacity>
-                            <Title style={styles.headerText}>Product Details</Title>
-                            <Image
-                                source={IMAGES.STYLERELLA2}
-                                style={styles.headerRightIamge}
-                            />
-                        </View>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
+            <Header
+                headerTitle='Product Details'
+                showCloseIcon
+                onClosePress={onBackPress}
+            />
+
             {/* Body */}
             <ScrollView
                 style={[styles.bodyContainer, {

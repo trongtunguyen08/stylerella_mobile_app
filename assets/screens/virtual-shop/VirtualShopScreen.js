@@ -21,6 +21,8 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, IMAGES, setHeight } from '../../contants/contants'
 import { styles } from './styles'
 import { t } from '../../locales/index'
+import Header from '../../componets/Header'
+import FloatingMenu from '../../componets/FloatingMenu'
 
 const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
 
@@ -81,8 +83,8 @@ const VirtualShopScreen = (props) => {
     const { width, height } = useWindowDimensions()
     let IMAGE_WIDTH = width * .6
     let IMAGE_HEIGHT = height * .25
-    let IMAGE_TOP = height * .42
-    let IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
+    let IMAGE_TOP = height * .35
+    let IMAGE_LEFT = width * .52 - (IMAGE_WIDTH / 2)
     if (width >= 700) {
         IMAGE_WIDTH = width * .5
         IMAGE_HEIGHT = height * .3
@@ -95,7 +97,6 @@ const VirtualShopScreen = (props) => {
         IMAGE_TOP = height * .45
         IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
     }
-
 
     const { headerTitle } = props.route.params
     const navigation = useNavigation()
@@ -202,151 +203,130 @@ const VirtualShopScreen = (props) => {
     }
 
     return (
-        <ImageBackground
-            source={IMAGES.VIRUAL_SHOPS_BG}
-            style={{
-                width,
-                height
-            }}
-            resizeMode='cover'
-            onLoadEnd={onLoadEnd}
-        >
-            {
-                loading
-                    ?
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: 'white',
-                        justifyContent: 'center'
-                    }}>
-                        <ActivityIndicator
-                            color={COLORS.primary}
-                        />
-                    </View>
-                    :
-                    <>
-                        <View
-                            style={[styles.headerContainer, {
-                                height: height * .11 + StatusBar.currentHeight / 2,
-                            }]}
-                        >
-                            <SafeAreaProvider>
-                                <SafeAreaView>
-                                    <View style={[styles.headerContent, {
-                                        width
-                                    }]}>
-                                        <Pressable
-                                            hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-                                            style={styles.headerBackIcon}
-                                            onPress={onBackPress}
-                                        >
-                                            <Ionicons
-                                                name='arrow-back-outline'
-                                                color={COLORS.white}
-                                                size={BACK_ICON_SIZE}
-                                            />
-                                        </Pressable>
-                                        <Title style={styles.headerText}>{headerTitle}</Title>
-                                        <Image
-                                            source={IMAGES.STYLERELLA2}
-                                            style={styles.headerRightIamge}
-                                        />
-                                    </View>
-                                </SafeAreaView>
-                            </SafeAreaProvider>
+        <>
+            {/* Header */}
+            <Header
+                headerTitle={headerTitle}
+                headerTitleStyle={{
+                    textTransform: 'uppercase'
+                }}
+                showCloseIcon
+                onClosePress={() => navigation.goBack()}
+            />
+            <ImageBackground
+                source={IMAGES.VIRUAL_SHOPS_BG}
+                style={{ flex: 1 }}
+                resizeMode='stretch'
+                onLoadEnd={onLoadEnd}
+            >
+                {
+                    loading
+                        ?
+                        <View style={{
+                            flex: 1,
+                            backgroundColor: 'white',
+                            justifyContent: 'center'
+                        }}>
+                            <ActivityIndicator
+                                color={COLORS.primary}
+                            />
                         </View>
-                        <Animated.FlatList
-                            data={DATA}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            keyExtractor={item => item.id + 'product'}
-                            pagingEnabled
-                            renderItem={({ item, index }) => {
-                                let inputRange = [(index - 0.4) * width, index * width, (index + 0.4) * width]
-                                return (
-                                    <Animated.View
-                                        style={{
-                                            opacity: itemOpacity,
-                                            transform: [{
-                                                translateY: itemTranslateY
-                                            }]
-                                        }}
-                                    >
-                                        <TouchableOpacity
-                                            activeOpacity={0.7}
+                        :
+                        <>
+                            {/* List Products */}
+                            <FloatingMenu />
+                            <Animated.FlatList
+                                data={DATA}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                keyExtractor={item => `Product-${item.id}`}
+                                pagingEnabled
+                                renderItem={({ item, index }) => {
+                                    let inputRange = [(index - 0.4) * width, index * width, (index + 0.4) * width]
+                                    return (
+                                        <Animated.View
                                             style={{
-                                                width, height,
-                                                zIndex: 9999
+                                                opacity: itemOpacity,
+                                                transform: [{
+                                                    translateY: itemTranslateY
+                                                }]
                                             }}
-                                            onPress={() => navigation.navigate('ProductDetails')}
                                         >
-                                            <Animated.Image
-                                                source={item.image}
-                                                style={[styles.itemImage, {
-                                                    transform: [
-                                                        {
-                                                            translateY: scrollX.interpolate({
-                                                                inputRange,
-                                                                outputRange: [-30, 0, -30]
-                                                            })
-                                                        },
-                                                        {
-                                                            scale: scrollX.interpolate({
-                                                                inputRange,
-                                                                outputRange: [0, 1, 0]
-                                                            })
-                                                        }
-                                                    ],
-                                                    opacity: scrollX.interpolate({
-                                                        inputRange,
-                                                        outputRange: [0, 1, 0]
-                                                    }),
-                                                    width: IMAGE_WIDTH,
-                                                    height: IMAGE_HEIGHT,
-                                                    top: IMAGE_TOP,
-                                                    left: IMAGE_LEFT
-                                                }]}
-                                                resizeMode='stretch'
-                                                onLoadEnd={onImageItemEndLoad}
-                                            />
-                                        </TouchableOpacity>
-                                    </Animated.View>
-                                )
-                            }}
-                            onScroll={Animated.event(
-                                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                                            <TouchableOpacity
+                                                activeOpacity={0.7}
+                                                style={{
+                                                    width, height,
+                                                    zIndex: 9999
+                                                }}
+                                                onPress={() => navigation.navigate('ProductDetails')}
+                                            >
+                                                <Animated.Image
+                                                    source={item.image}
+                                                    style={[styles.itemImage, {
+                                                        transform: [
+                                                            {
+                                                                translateY: scrollX.interpolate({
+                                                                    inputRange,
+                                                                    outputRange: [-30, 0, -30]
+                                                                })
+                                                            },
+                                                            {
+                                                                scale: scrollX.interpolate({
+                                                                    inputRange,
+                                                                    outputRange: [0, 1, 0]
+                                                                })
+                                                            }
+                                                        ],
+                                                        opacity: scrollX.interpolate({
+                                                            inputRange,
+                                                            outputRange: [0, 1, 0]
+                                                        }),
+                                                        width: IMAGE_WIDTH,
+                                                        height: IMAGE_HEIGHT,
+                                                        top: IMAGE_TOP,
+                                                        left: IMAGE_LEFT
+                                                    }]}
+                                                    resizeMode='stretch'
+                                                    onLoadEnd={onImageItemEndLoad}
+                                                />
+                                            </TouchableOpacity>
+                                        </Animated.View>
+                                    )
+                                }}
+                                onScroll={Animated.event(
+                                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                                    {
+                                        useNativeDriver: true
+                                    }
+                                )}
+                            />
+
+                            {/* Filter Button */}
+                            <Animated.View style={[styles.popupMenu]}>
                                 {
-                                    useNativeDriver: true
+                                    openMenu &&
+                                    <FilterItem />
                                 }
-                            )}
-                        />
+                                {/* Button Open/Close */}
+                                <Pressable
+                                    hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                                    onPress={onFilterPressed}
+                                >
+                                    <Animated.View style={styles.filterButtonWrapper}>
+                                        <Text style={styles.filterButtonText}>{t('filter')}</Text>
+                                        <AnimatedIcons
+                                            name='caret-up-outline'
+                                            size={18}
+                                            color={COLORS.white}
+                                        />
+                                    </Animated.View>
+                                </Pressable>
+                            </Animated.View>
+                        </>
 
-                        {/* Filter Button */}
-                        <Animated.View style={[styles.popupMenu]}>
-                            {
-                                openMenu &&
-                                <FilterItem />
-                            }
-                            {/* Button Open/Close */}
-                            <Pressable
-                                hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-                                onPress={onFilterPressed}
-                            >
-                                <Animated.View style={styles.filterButtonWrapper}>
-                                    <Text style={styles.filterButtonText}>{t('filter')}</Text>
-                                    <AnimatedIcons
-                                        name='caret-up-outline'
-                                        size={18}
-                                        color={COLORS.white}
-                                    />
-                                </Animated.View>
-                            </Pressable>
-                        </Animated.View>
-                    </>
-
-            }
-
-        </ImageBackground >
+                }
+            </ImageBackground >
+        </>
     )
 }
 

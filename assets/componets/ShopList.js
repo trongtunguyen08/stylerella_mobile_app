@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import { IMAGES, setHeight, setWidth, COLORS, width } from '../contants/contants'
 import { useNavigation } from '@react-navigation/native'
+import FloatingMenu from '../componets/FloatingMenu'
 
 const Data = [
     {
@@ -68,7 +69,7 @@ const ShopList = () => {
             source={IMAGES.SHOP_LIST_BG}
             blurRadius={3}
         >
-            <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
+            <FloatingMenu />
             <FlatList
                 data={Data}
                 keyExtractor={item => item.index.toString()}

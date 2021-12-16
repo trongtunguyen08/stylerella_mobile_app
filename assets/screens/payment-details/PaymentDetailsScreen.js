@@ -9,6 +9,9 @@ import { useNavigation } from '@react-navigation/native'
 
 import { styles } from './styles'
 import { COLORS, IMAGES, setWidth, setHeight, FONTS } from '../../contants/contants'
+import ButtonText from '../../componets/ButtonText'
+import FloatingMenu from '../../componets/FloatingMenu'
+import Header from '../../componets/Header'
 
 const PaymentDetailsScreen = () => {
     const navigation = useNavigation()
@@ -23,36 +26,22 @@ const PaymentDetailsScreen = () => {
     const [payMe, setPayMe] = useState(false)
     return (
         <View style={styles.container}>
-            <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
+            <FloatingMenu />
             {/* Header */}
-            <View
-                style={styles.headerContainer}
-            >
-                <SafeAreaProvider>
-                    <SafeAreaView>
-                        <View style={styles.headerContent}>
-                            <TouchableOpacity
-                                style={styles.headerBackIcon}
-                                onPress={() => navigation.goBack()}
-                            >
-                                <Ionicons
-                                    name='arrow-back-outline'
-                                    color={COLORS.white}
-                                    size={setWidth(6)}
-                                />
-                            </TouchableOpacity>
-                            <Title style={styles.headerTitleText}>Payment Details</Title>
-                            <Image
-                                source={IMAGES.STYLERELLA2}
-                                style={styles.headerRightIamge}
-                            />
-                        </View>
-                    </SafeAreaView>
-                </SafeAreaProvider>
-            </View>
+            <Header
+                headerTitle='Payment Details'
+                showCloseIcon
+                onClosePress={() => navigation.goBack()}
+            />
 
             {/* Body */}
-            <ScrollView style={styles.bodyContainer}>
+            <ScrollView
+                style={styles.bodyContainer}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: 30
+                }}
+            >
                 <View style={{ padding: 20 }}>
                     <Subheading style={styles.titleText}>Products</Subheading>
                     {
@@ -177,12 +166,13 @@ const PaymentDetailsScreen = () => {
                         <Text style={styles.pickerItemText}>PayMe</Text>
                     </View>
                 </View>
-                <TouchableOpacity
-                    style={styles.confirmWrapper}
+                <ButtonText
+                    text='CONFIRM PAYMET'
                     onPress={() => navigation.replace('OrderSuccess')}
-                >
-                    <Text style={styles.confirmText}>CONFIRM PAYMET</Text>
-                </TouchableOpacity>
+                    containerStyle={{
+                        marginTop: 15,
+                    }}
+                />
             </ScrollView>
         </View>
     )

@@ -1,4 +1,4 @@
-import { Dimensions, StatusBar } from "react-native"
+import { Dimensions, StatusBar, useWindowDimensions } from "react-native"
 
 export const { width, height } = Dimensions.get('window')
 
@@ -24,11 +24,11 @@ export const COLORS = {
 }
 
 export const IMAGES = {
+    LOGIN_REGISTER_BG: require('../images/log_ges_bg.png'),
     FACEBOOK: require('../images/facebook.png'),
     GOOGLE: require('../images/google.png'),
     WECHAT: require('../images/wechat.png'),
     BUTTERFLY: require('../images/butterfly.png'),
-    BUTTON: require('../images/button3.png'),
     LANDING_BACKGROUND: require('../images/landing.png'),
     STYLERELLA: require('../images/stylerella.png'),
     STYLERELLA2: require('../images/stylerella2.png'),
@@ -57,7 +57,7 @@ export const IMAGES = {
     CHANRL: require('../images/Chanel.png'),
     HERMES: require('../images/Hermes.png'),
     BAG: require('../images/bag.png'),
-    VIRUAL_SHOPS_BG: require('../images/Virtual_Shops_BG.png'),
+    VIRUAL_SHOPS_BG: require('../images/Virtual_Shops_BG_2.png'),
     VIRTUAL_BAG: require('../images/Bag_Virtual.png'),
     FRAME: require('../images/frame.png'),
     SHARE_BUTTON: require('../images/share.png'),
@@ -66,4 +66,5 @@ export const IMAGES = {
     LOGO_BOLD: require('../images/logo_bold.png'),
     SHOPPING_BAG_ERROR: require('../contants/shopping_bag_error.json'),
     THANK_YOU: require('../contants/thank_you.json'),
+    FLOATING_MENU_ICON: require('../images/floating_icon.png'),
 }

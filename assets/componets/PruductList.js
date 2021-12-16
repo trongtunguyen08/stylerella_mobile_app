@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { COLORS, FONTS, IMAGES, setHeight } from '../contants/contants'
 import { ACTION_TYPES } from '../redux/reducers/actionTypes'
+import FloatingMenu from '../componets/FloatingMenu'
 
 const DATA = [
     {
@@ -176,12 +177,12 @@ const ProductList = () => {
 
     return (
         <>
-            <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
             <ImageBackground
                 source={IMAGES.SHOP_LIST_BG}
                 style={styles.container}
                 blurRadius={5}
             >
+                <FloatingMenu />
                 <FlatList
                     data={DATA}
                     keyExtractor={item => item.id.toString()}

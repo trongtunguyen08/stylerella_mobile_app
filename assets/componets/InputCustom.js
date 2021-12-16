@@ -4,12 +4,13 @@ import { Ionicons } from '@expo/vector-icons'
 import * as Haptics from 'expo-haptics'
 
 import { COLORS, FONTS, width } from '../contants/contants'
+import { Caption } from 'react-native-paper'
 
 const InputAnimated = Animated.createAnimatedComponent(TextInput)
 
 const InputCustom = (props) => {
     const { width, height } = useWindowDimensions()
-    const { placeholder, value, onChangeText, leftIconName, isPassword } = props
+    const { label, value, onChangeText, isPassword } = props
     let ICON_SIZE = 22
     let INPUT_WIDTH = '100%'
 
@@ -46,79 +47,63 @@ const InputCustom = (props) => {
     }, [])
 
     return (
-        <View style={[styles.container, {
+        <View style={{
             width: INPUT_WIDTH
-        }]}>
-            {
-                leftIconName && <Ionicons name={leftIconName} size={ICON_SIZE} style={styles.inputIconLeft} />
-            }
-            <InputAnimated
-                placeholder={placeholder}
-                value={value}
-                onChangeText={onChangeText}
-                style={[styles.input, {
-                    transform: [
-                        {
-                            translateY
-                        }
-                    ]
-                }]}
-                placeholderTextColor={COLORS.primary}
-                secureTextEntry={hiding}
-                {
-                ...props
-                }
-            />
-            {
-                isPassword &&
-                <TouchableOpacity
-                    onPress={() => {
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-                        setHiding(hiding => !hiding)
+        }}>
+            <Caption
+                style={{
+                    color: COLORS.white,
+                    fontFamily: FONTS.MeridiesAntiqua
+                }}
+            >
+                {label}
+            </Caption>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderBottomWidth: 0.5,
+                    marginBottom: 10,
+                    borderBottomColor: COLORS.white
+                }}
+            >
+                <InputAnimated
+                    value={value}
+                    onChangeText={onChangeText}
+                    style={{
+                        transform: [
+                            {
+                                translateY
+                            }
+                        ],
+                        flex: 1,
+                        paddingVertical: 10,
+                        fontFamily: FONTS.MeridiesAntiqua,
+                        color: COLORS.white
                     }}
-                >
-                    <Ionicons name={RIGHT_ICON_NAME} size={ICON_SIZE} style={styles.inputIconRight} />
-                </TouchableOpacity>
-            }
+                    secureTextEntry={hiding}
+                    {
+                    ...props
+                    }
+                />
+                {
+                    isPassword &&
+                    <TouchableOpacity
+                        onPress={() => {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                            setHiding(hiding => !hiding)
+                        }}
+                    >
+                        <Ionicons
+                            name={RIGHT_ICON_NAME}
+                            size={ICON_SIZE}
+                            color={COLORS.white}
+                        />
+                    </TouchableOpacity>
+                }
+            </View>
         </View>
     )
 }
 
 export default InputCustom
-
-const ratio = PixelRatio.get()
-let PADDING = Platform.OS == 'android' ? 14 : 18
-let FONT_SIZE = 18
-
-if (Platform.OS == 'android' && ratio <= 2) {
-    PADDING = 7
-    FONT_SIZE = 12
-}
-
-const styles = StyleSheet.create({
-    container: {
-        marginBottom: 10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-        borderWidth: 1,
-        padding: PADDING,
-        borderColor: COLORS.primary,
-        alignSelf: 'center'
-    },
-    input: {
-        fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.highlight,
-        fontSize: FONT_SIZE,
-        flex: 1
-    },
-    inputIconLeft: {
-        color: COLORS.primary,
-        marginRight: 10
-    },
-    inputIconRight: {
-        color: COLORS.primary,
-        marginLeft: 10
-    }
-})

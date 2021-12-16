@@ -21,6 +21,7 @@ import { IMAGES, COLORS } from '../../contants/contants'
 import { t } from '../../locales/index'
 import { useNavigation } from '@react-navigation/native'
 import { getRandomNumber } from '../../contants/getRandomNumber'
+import ButtonText from '../../componets/ButtonText'
 import WaterRipple from '../../componets/WaterRipple'
 import FallLeaf from '../../componets/FallLeaf'
 import Birds from '../../componets/Birds'
@@ -30,6 +31,7 @@ import Glow from '../../componets/Glow'
 import Sun from '../../componets/Sun'
 import PopupMenu from '../../componets/PopupMenu'
 import FallingSnow from '../../componets/FallingSnow'
+import FloatingMenu from '../../componets/FloatingMenu'
 
 
 const BackgroundAnimated = Animated.createAnimatedComponent(ImageBackground)
@@ -41,8 +43,6 @@ const MapScreen = () => {
     }
     let IMAGE_WIDTH = width * 3
     let IMAGE_HEIGHT = setHeight(100)
-    let BUTTON_WIDTH = width * .35
-    let BUTTON_HEIGHT = width * .18
 
     let CITY_GIRL_BUILDING_WIDTH = width * .6
     let CITY_GIRL_BUILDING_HEIGHT = setHeight(45)
@@ -58,7 +58,7 @@ const MapScreen = () => {
     let YOGA_LIVING_BUTTON_RIGHT = width * .35
     let YOGA_LIVING_BUTTON_TOP = setHeight(32)
 
-    let PICNIC_BUTTON_TOP = setHeight(23)
+    let PICNIC_BUTTON_TOP = setHeight(24)
     let PICNIC_BUTTON_LEFT = width * .65
 
     let TREE_WIDTH = width * .61
@@ -91,7 +91,6 @@ const MapScreen = () => {
     }
 
     if (Platform.OS === 'android' && ratio <= 1.69) {
-        BUTTON_HEIGHT = width * .13
         TREE_TOP = setHeight(26)
         CITY_GIRL_BUILDING_TOP = setHeight(27)
         MIRROR_TOP = setHeight(37)
@@ -99,8 +98,6 @@ const MapScreen = () => {
 
     if (width >= 700) {
         IMAGE_WIDTH = width * 2
-        BUTTON_WIDTH = width * .25
-        BUTTON_HEIGHT = width * .1
         CITY_GIRL_BUTTON_BOTTOM = setHeight(26)
         CITY_GIRL_BUTTON_LEFT = width * .21
         YOGA_LIVING_BUTTON_RIGHT = width * .21
@@ -125,8 +122,6 @@ const MapScreen = () => {
 
     if (width >= 1024) {
         IMAGE_WIDTH = width
-        BUTTON_WIDTH = width * .15
-        BUTTON_HEIGHT = width * .07
         CITY_GIRL_BUTTON_BOTTOM = setHeight(26)
         CITY_GIRL_BUTTON_LEFT = width * .21
         YOGA_LIVING_BUTTON_RIGHT = width * .1
@@ -385,6 +380,7 @@ const MapScreen = () => {
     return (
         <View style={styles.container}>
             <StatusBar barStyle='light-content' translucent backgroundColor='transparent' />
+            <FloatingMenu />
             <Animated.ScrollView
                 ref={ref}
                 horizontal
@@ -451,8 +447,9 @@ const MapScreen = () => {
                             resizeMode='stretch'
                         />
                     </TouchableOpacity>
-                    <BackgroundAnimated
-                        style={[styles.buttonWrapper, styles.cityGirlButton, {
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
                             opacity: buttonOpacity,
                             transform: [
                                 {
@@ -462,26 +459,24 @@ const MapScreen = () => {
                                     scale: cityGirlButtonScale
                                 }
                             ],
-                            width: BUTTON_WIDTH,
-                            height: BUTTON_HEIGHT,
                             bottom: CITY_GIRL_BUTTON_BOTTOM,
-                            left: CITY_GIRL_BUTTON_LEFT
-                        }]}
-                        source={IMAGES.BUTTON}
-                        resizeMode={'stretch'}
+                            left: CITY_GIRL_BUTTON_LEFT,
+                            zIndex: 999
+                        }}
                     >
-                        <Pressable
-                            hitSlop={{ top: 20, right: 60, bottom: 20, left: 60 }}
+                        <ButtonText
+                            text={t('city_girl')}
+                            noBorder
+                            containerStyle={{
+                                width: 150,
+                                borderRadius: 10
+                            }}
                             onPress={() => {
                                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                                 navigation.navigate('Zone', { headerTitle: t('city_girl') })
                             }}
-                        >
-                            <Text style={[styles.buttonText, {
-                                marginBottom: BUTTON_HEIGHT / 5
-                            }]}>{t('city_girl')}</Text>
-                        </Pressable>
-                    </BackgroundAnimated>
+                        />
+                    </Animated.View>
 
                     {/* Yoga Living Button */}
                     <TouchableOpacity
@@ -507,8 +502,9 @@ const MapScreen = () => {
                             resizeMode='stretch'
                         />
                     </TouchableOpacity>
-                    <BackgroundAnimated
-                        style={[styles.buttonWrapper, styles.yogaLivingButton, {
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
                             opacity: buttonOpacity,
                             transform: [
                                 {
@@ -518,23 +514,21 @@ const MapScreen = () => {
                                     scale: yogaButtonScale
                                 }
                             ],
-                            width: BUTTON_WIDTH,
-                            height: BUTTON_HEIGHT,
                             right: YOGA_LIVING_BUTTON_RIGHT,
-                            top: YOGA_LIVING_BUTTON_TOP
-                        }]}
-                        source={IMAGES.BUTTON}
-                        resizeMode={'stretch'}
+                            top: YOGA_LIVING_BUTTON_TOP,
+                            zIndex: 999
+                        }}
                     >
-                        <Pressable
-                            hitSlop={{ top: 20, right: 60, bottom: 20, left: 60 }}
+                        <ButtonText
+                            text={t('yoga_living')}
+                            noBorder
+                            containerStyle={{
+                                width: 150,
+                                borderRadius: 10
+                            }}
                             onPress={() => alert("Yoga Living")}
-                        >
-                            <Text style={[styles.buttonText, {
-                                marginBottom: BUTTON_HEIGHT / 5
-                            }]}>{t('yoga_living')}</Text>
-                        </Pressable>
-                    </BackgroundAnimated>
+                        />
+                    </Animated.View>
 
                     {/* Balloon */}
                     <TouchableOpacity
@@ -564,8 +558,11 @@ const MapScreen = () => {
                         />
                     </TouchableOpacity>
                     {/* Picnic Button */}
-                    <BackgroundAnimated
-                        style={[styles.buttonWrapper, styles.picnicButton, {
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            top: PICNIC_BUTTON_TOP,
+                            left: PICNIC_BUTTON_LEFT,
                             opacity: buttonOpacity,
                             transform: [
                                 {
@@ -575,23 +572,19 @@ const MapScreen = () => {
                                     scale: picnicButtonScale
                                 }
                             ],
-                            width: BUTTON_WIDTH,
-                            height: BUTTON_HEIGHT,
-                            top: PICNIC_BUTTON_TOP,
-                            left: PICNIC_BUTTON_LEFT
-                        }]}
-                        source={IMAGES.BUTTON}
-                        resizeMode={'stretch'}
+                            zIndex: 999
+                        }}
                     >
-                        <Pressable
-                            hitSlop={{ top: 20, right: 60, bottom: 20, left: 60 }}
+                        <ButtonText
+                            text={t('picnic')}
+                            noBorder
+                            containerStyle={{
+                                width: 150,
+                                borderRadius: 10
+                            }}
                             onPress={() => alert("Picnic")}
-                        >
-                            <Text style={[styles.buttonText, {
-                                marginBottom: BUTTON_HEIGHT / 5
-                            }]}>{t('picnic')}</Text>
-                        </Pressable>
-                    </BackgroundAnimated>
+                        />
+                    </Animated.View>
 
                     {/* Animation */}
                     {

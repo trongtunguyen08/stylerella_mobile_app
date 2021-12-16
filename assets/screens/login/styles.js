@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, StatusBar } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { FONTS, COLORS } from '../../contants/contants'
 
 export const styles = StyleSheet.create({
@@ -10,46 +10,18 @@ export const styles = StyleSheet.create({
         flex: 1,
         padding: 20
     },
-    headerContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: COLORS.primary,
-        marginBottom: 20
-    },
-    headerContent: {
-        marginTop: Platform.OS == 'android' ? StatusBar.currentHeight / 2 : 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    headerText: {
-        fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.white,
-        textAlign: 'center',
-        textTransform: 'uppercase'
-    },
-    headerBackIcon: {
-        position: 'absolute',
-        left: 20,
-    },
-    headerRightIamge: {
-        right: 20,
-        position: 'absolute',
-        tintColor: COLORS.white
-    },
     titleWrapper: {
         alignSelf: 'center',
         marginBottom: 10
     },
     titleText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.primary,
+        color: COLORS.white,
         textAlign: 'center'
     },
     subTitleText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.primary,
+        color: COLORS.white,
         textAlign: 'center'
     },
     rememberContent: {
@@ -64,21 +36,12 @@ export const styles = StyleSheet.create({
     },
     rememberMeText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.highlight,
+        color: COLORS.white,
         marginLeft: 5
     },
     forgotText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.highlight
-    },
-    registerButtonWrapper: {
-        alignSelf: 'center',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    registerText: {
-        color: COLORS.white,
-        fontFamily: FONTS.MeridiesAntiqua
+        color: COLORS.white
     },
     footerLoginWrapper: {
         flexDirection: 'row',
@@ -87,11 +50,18 @@ export const styles = StyleSheet.create({
     },
     alreadyHaveAccountText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.gray
+        color: COLORS.white
     },
     loginText: {
         fontFamily: FONTS.MeridiesAntiqua,
-        color: COLORS.highlight,
+        color: COLORS.white,
         marginLeft: 5
+    },
+    floatingButterfly: {
+        position: 'absolute',
+        right: 45 / 2,
+        bottom: 45,
+        zIndex: 999,
+        tintColor: COLORS.white
     }
 })

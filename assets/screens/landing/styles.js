@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     },
     socialLoginWrapper: {
         flexDirection: 'row',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     butterflyAnimatedRegisterWrapper: {
         position: 'absolute',

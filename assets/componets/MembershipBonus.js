@@ -11,9 +11,10 @@ import { Text, Title } from 'react-native-paper'
 import { t } from '../locales/index'
 import { FONTS, COLORS } from '../contants/contants'
 import { TouchableOpacity } from 'react-native'
+import ButtonText from '../componets/ButtonText'
 
 const MembershipBonus = (props) => {
-    let RIGHT = 0
+    let RIGHT = 5
     const { width, height } = useWindowDimensions()
     if (width >= 700) {
         RIGHT = width * .1
@@ -37,12 +38,13 @@ const MembershipBonus = (props) => {
                 <Text style={[styles.text]}>Regerral Friend Code</Text>
                 <Title style={[styles.text, styles.itemValueText]}>0000</Title>
             </View>
-            <TouchableOpacity
+            <ButtonText
+                text={t('go_back')}
                 onPress={goBack}
-                style={styles.goBackWrapper}
-            >
-                <Text style={styles.text}>{t('go_back')}</Text>
-            </TouchableOpacity>
+                containerStyle={{
+                    width: 150
+                }}
+            />
         </Animated.View>
     )
 }
