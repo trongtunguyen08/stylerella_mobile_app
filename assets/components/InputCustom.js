@@ -15,10 +15,10 @@ const InputCustom = (props) => {
     let INPUT_WIDTH = '100%'
 
     if (width >= 700) {
-        INPUT_WIDTH = '80%'
+        INPUT_WIDTH = '75%'
     }
     if (width >= 1024) {
-        INPUT_WIDTH = '60%'
+        INPUT_WIDTH = '55%'
     }
 
     const [hiding, setHiding] = useState(isPassword)
@@ -48,7 +48,8 @@ const InputCustom = (props) => {
 
     return (
         <View style={{
-            width: INPUT_WIDTH
+            width: INPUT_WIDTH,
+            alignSelf: 'center'
         }}>
             <Caption
                 style={{

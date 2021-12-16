@@ -8,11 +8,11 @@ import {
     BackHandler,
     Image,
     TextInput,
-    View
+    View,
+    useWindowDimensions
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Caption, Title, Text } from 'react-native-paper'
-import LottieView from 'lottie-react-native'
 
 import { IMAGES, COLORS, FONTS } from '../../contants/contants'
 import { styles } from './styles'
@@ -25,6 +25,7 @@ import {
 } from '../../components'
 
 const RegisterScreen = () => {
+    const { width } = useWindowDimensions()
     const navigation = useNavigation()
     const [loading, setLoading] = useState(true)
     const [floatingButterfyShow, setFloatingButterfyShow] = useState(false)
@@ -154,7 +155,9 @@ const RegisterScreen = () => {
                             style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                marginVertical: 5
+                                marginVertical: 5,
+                                width: (width >= 700) ? '75%' : (width >= 1024 ? '55%' : '100%'),
+                                alignSelf: 'center'
                             }}
                         >
                             <Text
@@ -169,12 +172,12 @@ const RegisterScreen = () => {
                                 style={{
                                     fontFamily: FONTS.MeridiesAntiqua,
                                     color: COLORS.white,
-                                    flex: 1,
                                     marginLeft: 20,
                                     borderWidth: 0.5,
                                     borderRadius: 10,
                                     padding: 10,
-                                    borderColor: COLORS.white
+                                    borderColor: COLORS.white,
+                                    flex: 1
                                 }}
                                 autoCorrect={false}
                                 autoCapitalize='none'
