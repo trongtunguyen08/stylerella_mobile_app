@@ -87,13 +87,13 @@ const VirtualShopScreen = (props) => {
     if (width >= 700) {
         IMAGE_WIDTH = width * .5
         IMAGE_HEIGHT = height * .3
-        IMAGE_TOP = height * .46
+        IMAGE_TOP = height * .3
         IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
     }
     if (width >= 1024) {
-        IMAGE_WIDTH = width * .5
-        IMAGE_HEIGHT = height * .5
-        IMAGE_TOP = height * .45
+        IMAGE_WIDTH = width * .4
+        IMAGE_HEIGHT = height * .4
+        IMAGE_TOP = height * .22
         IMAGE_LEFT = width * .5 - (IMAGE_WIDTH / 2)
     }
 

@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useRef, useState } from 'react'
-import { Alert } from 'react-native'
 import { PixelRatio, Platform, StatusBar } from 'react-native'
 import {
     StyleSheet,
@@ -9,7 +8,8 @@ import {
     FlatList,
     Image,
     TouchableOpacity,
-    useWindowDimensions
+    useWindowDimensions,
+    Alert
 } from 'react-native'
 import { Rating } from 'react-native-elements'
 import { Text, Subheading, Caption, Snackbar } from 'react-native-paper'
@@ -190,6 +190,7 @@ const ProductList = () => {
                     data={DATA}
                     keyExtractor={item => item.id.toString()}
                     showsVerticalScrollIndicator={false}
+                    scrollEventThrottle={1900}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity

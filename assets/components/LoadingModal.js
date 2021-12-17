@@ -8,7 +8,7 @@ import {
 import { Text } from 'react-native-paper'
 import { COLORS, FONTS } from '../contants/contants'
 
-const LoadingModal = () => {
+const LoadingModal = ({ text }) => {
     const { width, height } = useWindowDimensions()
     const animatedOpacityValue = React.useRef(new Animated.Value(0)).current
     const animatedScaleValue = React.useRef(new Animated.Value(0)).current
@@ -36,7 +36,7 @@ const LoadingModal = () => {
             Animated.spring(
                 animatedScaleValue,
                 {
-                    toValue: 1.1,
+                    toValue: 1,
                     useNativeDriver: true
                 }
             )
@@ -81,7 +81,7 @@ const LoadingModal = () => {
                         marginTop: 15
                     }}
                 >
-                    Please wait...
+                    {text ? text : 'Please wait...'}
                 </Text>
             </Animated.View>
         </Animated.View>

@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import {
     StyleSheet,
     Animated,
     TouchableOpacity,
     View,
-    PixelRatio,
     Pressable,
     BackHandler,
     useWindowDimensions
@@ -13,14 +12,16 @@ import {
 import * as Haptics from 'expo-haptics'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { Text } from 'react-native-paper'
-
-import { COLORS, FONTS, setHeight, setWidth } from '../contants/contants'
-import ShopList from './ShopList'
-import ProductList from './ProductList'
-import { t } from '../locales/index'
-const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
-import MenuOfZone from './MenuOfZone'
 import { useNavigation } from '@react-navigation/native'
+
+import { COLORS, FONTS } from '../contants/contants'
+import ShopList from './ShopList.js'
+import ProductList from './ProductList'
+import MenuOfZone from './MenuOfZone'
+
+import { t } from '../locales/index'
+
+const AnimatedIcons = Animated.createAnimatedComponent(Ionicons)
 
 const TabView = () => {
     const { width, height } = useWindowDimensions()

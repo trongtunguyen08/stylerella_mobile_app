@@ -12,6 +12,13 @@ import { COLORS, IMAGES } from '../contants/contants'
 
 const FloatingMenu = ({ onPress }) => {
     const { width } = useWindowDimensions()
+    let ICON_SIZE = width * .17
+    if (width >= 700) {
+        ICON_SIZE = width * .1
+    }
+    if (width >= 1024) {
+        ICON_SIZE = width * .07
+    }
     return (
         <PanGestureHandler>
             <TouchableOpacity
@@ -27,8 +34,8 @@ const FloatingMenu = ({ onPress }) => {
                 <Image
                     source={IMAGES.FLOATING_MENU_ICON}
                     style={{
-                        width: width * .17,
-                        height: width * .17
+                        width: ICON_SIZE,
+                        height: ICON_SIZE
                     }}
                 />
             </TouchableOpacity>

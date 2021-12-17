@@ -28,7 +28,7 @@ const RegisterScreen = () => {
     const { width } = useWindowDimensions()
     const navigation = useNavigation()
     const [loading, setLoading] = useState(true)
-    const [floatingButterfyShow, setFloatingButterfyShow] = useState(false)
+    const [buttonWidth, setButtonWidth] = useState(null)
 
     const onBackPress = () => {
         navigation.goBack()
@@ -36,7 +36,6 @@ const RegisterScreen = () => {
 
     const onRegisterPress = () => {
         setLoading(true)
-        setFloatingButterfyShow(true)
         setTimeout(() => {
             navigation.replace('Success')
         }, 2000)
@@ -186,27 +185,24 @@ const RegisterScreen = () => {
                         </View>
                     </Animated.View>
 
-                    <Animated.View style={{
-                        transform: [
-                            {
-                                translateY
-                            }
-                        ]
-                    }}>
-                        {
-                            floatingButterfyShow &&
-                            <Image
-                                source={IMAGES.BUTTERFLY}
-                                style={styles.floatingButterfly}
-                            />
-                        }
-
+                    <Animated.View
+                        style={{
+                            transform: [
+                                {
+                                    translateY
+                                }
+                            ]
+                        }}
+                    >
                         <ButtonText
                             text={t('register')}
                             containerStyle={{
                                 marginVertical: 10
                             }}
                             onPress={onRegisterPress}
+                            onLayout={event => {
+                                setButtonWidth(event.nativeEvent.layout.width)
+                            }}
                         />
                     </Animated.View>
 

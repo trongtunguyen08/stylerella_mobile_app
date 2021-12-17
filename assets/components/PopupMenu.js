@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
 import { StyleSheet, Animated, PixelRatio, Platform, Pressable } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { Text } from 'react-native-paper'
 
-import { FONTS, setWidth, width, COLORS } from '../contants/contants'
+import { FONTS, setWidth, COLORS } from '../contants/contants'
 import { t } from '../locales/index'
 import MenuOfStylerella from './MenuOfStylerella'
 

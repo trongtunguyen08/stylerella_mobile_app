@@ -37,7 +37,6 @@ const LoginScreen = () => {
 
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
-    const [showFloatingButterfly, setShowFloatingButterfly] = useState(false)
 
     const animatedValue = useRef(new Animated.Value(0)).current
     const translateY = animatedValue.interpolate({
@@ -79,10 +78,8 @@ const LoginScreen = () => {
 
     const onLoginPress = () => {
         setLoading(true)
-        setShowFloatingButterfly(true)
         setTimeout(() => {
             navigation.replace('Map')
-            setShowFloatingButterfly(false)
         }, 2000)
     }
 
@@ -167,14 +164,6 @@ const LoginScreen = () => {
                             }
                         ]
                     }}>
-                        {
-                            showFloatingButterfly &&
-                            <Image
-                                source={IMAGES.BUTTERFLY}
-                                style={styles.floatingButterfly}
-                            />
-                        }
-
                         <ButtonText
                             text={t('login')}
                             onPress={onLoginPress}

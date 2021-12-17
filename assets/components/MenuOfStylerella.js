@@ -14,7 +14,7 @@ import { Divider } from 'react-native-elements'
 import { Text, Title } from 'react-native-paper'
 
 import { t } from '../locales/index'
-import { FONTS, setWidth, width, COLORS, IMAGES } from '../contants/contants'
+import { FONTS, COLORS, IMAGES } from '../contants/contants'
 import AccountDetails from './AccountDetails'
 
 

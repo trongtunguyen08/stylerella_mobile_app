@@ -14,7 +14,8 @@ const ButtonText = ({
     textStyle,
     onPress,
     noBorder,
-    disabled
+    disabled,
+    onLayout
 }) => {
     const { width, height } = useWindowDimensions()
     let BUTTON_HEIGHT = height * .052
@@ -46,6 +47,7 @@ const ButtonText = ({
                     alignSelf: 'center',
                     ...containerStyle
                 }}
+                onLayout={onLayout}
             >
                 <View
                     style={{

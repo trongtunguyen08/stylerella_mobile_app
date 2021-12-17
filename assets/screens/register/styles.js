@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
     },
     floatingButterfly: {
         position: 'absolute',
-        bottom: 45,
-        right: 45 / 2,
+        width: 45,
+        height: 45,
         tintColor: COLORS.white,
         zIndex: 999
     }

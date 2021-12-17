@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Platform, TouchableOpacity } from 'react-native'
+import { Platform, ScrollView, TouchableOpacity } from 'react-native'
 import {
     StyleSheet,
     Text,
@@ -12,9 +12,10 @@ import {
     StatusBar,
     useWindowDimensions
 } from 'react-native'
-import { IMAGES, setHeight, setWidth, COLORS, width } from '../contants/contants'
+import { IMAGES } from '../contants/contants'
 import { useNavigation } from '@react-navigation/native'
-import { FloatingMenu, LoadingModal } from '../components'
+import FloatingMenu from './FloatingMenu'
+import LoadingModal from './LoadingModal'
 
 const Data = [
     {
@@ -73,6 +74,7 @@ const ShopList = () => {
             {
                 loading && <LoadingModal />
             }
+
             <FlatList
                 data={Data}
                 keyExtractor={item => item.index.toString()}

@@ -10,7 +10,7 @@ import { Text, Title } from 'react-native-paper'
 
 import { t } from '../locales/index'
 import { FONTS, COLORS } from '../contants/contants'
-import ButtonText from '../components/ButtonText'
+import ButtonText from './ButtonText'
 
 const MembershipBonus = (props) => {
     let RIGHT = 5

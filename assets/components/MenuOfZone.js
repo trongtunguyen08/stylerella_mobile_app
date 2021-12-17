@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons'
 import React, { useRef, useEffect, useState } from 'react'
-import { StyleSheet, View, Animated, TouchableOpacity, Pressable, Platform, PixelRatio } from 'react-native'
+import { StyleSheet, View, Animated, TouchableOpacity, Pressable, PixelRatio } from 'react-native'
 import * as Haptics from 'expo-haptics'
-import { Text, Title, Caption, Headline } from 'react-native-paper'
+import { Text, Title } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
 
 import { COLORS, FONTS, setHeight, width } from '../contants/contants'
-import { useNavigation } from '@react-navigation/native'
 
 const MenuOfZone = (props) => {
     const navigation = useNavigation()
